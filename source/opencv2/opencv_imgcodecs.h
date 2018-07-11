@@ -20,6 +20,5 @@
 extern void opencv_imgcodecs_init(int module_number);
 PHP_FUNCTION(opencv_imread);
 PHP_FUNCTION(opencv_imwrite);
-PHP_FUNCTION(opencv_imdecode);
 
 #endif //OPENCV_OPENCV_IMCODECS_H
