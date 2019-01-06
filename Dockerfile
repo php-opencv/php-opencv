@@ -6,4 +6,4 @@ RUN wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master
 
 RUN git clone https://github.com/php-opencv/php-opencv.git
 
-RUN cd php-opencv && phpize && ./configure --with-php-config=/usr/bin/php-config && make && make install
+RUN cd php-opencv && phpize && ./configure --with-php-config=/usr/bin/php-config && make && make install && make test
