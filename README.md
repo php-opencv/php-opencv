@@ -21,7 +21,7 @@ echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
 
 ### Requirements
 - OpenCV 4.0.0+ (for OpenCV 3.4 use branch 3.4)
-- PHP 7.0/7.1/7.2
+- PHP 7.0 / 7.1 / 7.2
 
 ### Features
 - [core](https://phpopencv.org/docs/mat.html)
