@@ -239,7 +239,7 @@ void opencv_lbph_face_recognizer_free_obj(zend_object *object)
 {
     opencv_lbph_face_recognizer_object *obj;
     obj = get_lbph_face_recognizer_obj(object);
-    delete obj->faceRecognizer;
+    //delete obj->faceRecognizer; //todo: it's hotfix for: double free or corruption (out) Aborted (core dumped)
     zend_object_std_dtor(object);
 }
 
