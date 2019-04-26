@@ -34,6 +34,7 @@ echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
 
 ### Helper for autocomplete and highlighting in your IDE
 - [phpdoc file](https://github.com/php-opencv/php-opencv-examples/blob/master/phpdoc.php)
+- [php-opencv-ide-helper](https://github.com/hihozhou/php-opencv-ide-helper)
 
 ### Contributors
 - [@morozovsk](https://github.com/morozovsk)
