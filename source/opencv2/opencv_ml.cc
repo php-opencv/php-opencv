@@ -103,16 +103,18 @@ PHP_METHOD(opencv_k_nearest, train)
     RETURN_BOOL(obj->KNearest->train(*samples_obj->mat, (int)layout, *responses_obj->mat));
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
 
 
 /**
  * opencv_k_nearest_methods[]
  */
 const zend_function_entry opencv_k_nearest_methods[] = {
-        PHP_ME(opencv_k_nearest, create, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-        PHP_MALIAS(opencv_k_nearest, getDefaultK ,get_default_k, NULL, ZEND_ACC_PUBLIC)
-        PHP_MALIAS(opencv_k_nearest, setDefaultK ,set_default_k, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_k_nearest, train, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_k_nearest, create, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+        PHP_MALIAS(opencv_k_nearest, getDefaultK ,get_default_k, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_MALIAS(opencv_k_nearest, setDefaultK ,set_default_k, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_k_nearest, train, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */

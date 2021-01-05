@@ -132,12 +132,15 @@ PHP_METHOD(opencv_cascade_classifier, detect_multi_scale)
     RETURN_NULL();
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 /**
  * opencv_cascade_classifier_methods[]
  */
 const zend_function_entry opencv_cascade_classifier_methods[] = {
-        PHP_ME(opencv_cascade_classifier, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_cascade_classifier, load, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_cascade_classifier, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_cascade_classifier, load, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_MALIAS(opencv_cascade_classifier, detectMultiScale ,detect_multi_scale, opencv_cascade_classifier_detect_multi_scale_arginfo, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };

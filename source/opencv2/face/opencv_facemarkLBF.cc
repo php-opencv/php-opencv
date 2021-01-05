@@ -160,13 +160,16 @@ PHP_METHOD(opencv_facemark_lbf, fit)
     RETURN_NULL();//RETURN_ZVAL(landmarks_real_zval,0,0);
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 /**
  * opencv_facemark_lbf_methods[]
  */
 const zend_function_entry opencv_facemark_lbf_methods[] = {
-        PHP_ME(opencv_facemark_lbf, create, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-        PHP_ME(opencv_facemark_lbf, loadModel, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_facemark_lbf, getFaces, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_facemark_lbf, create, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+        PHP_ME(opencv_facemark_lbf, loadModel, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_facemark_lbf, getFaces, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_facemark_lbf, fit, opencv_facemark_lbf_fit_arginfo, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };

@@ -52,8 +52,8 @@ PHP_METHOD(opencv_point, __construct)
 }
 
 void opencv_point_update_property_by_c_point(zval *z, Point *point){
-    zend_update_property_long(opencv_point_ce, z, "x", sizeof("x")-1, point->x);
-    zend_update_property_long(opencv_point_ce, z, "y", sizeof("y")-1, point->y);
+    zend_update_property_long(opencv_point_ce, Z_OBJ_P(z), "x", sizeof("x")-1, point->x);
+    zend_update_property_long(opencv_point_ce, Z_OBJ_P(z), "y", sizeof("y")-1, point->y);
 }
 
 
@@ -69,14 +69,15 @@ PHP_METHOD(opencv_point, print)
     RETURN_NULL();
 }
 
-
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
 
 /**
  * opencv_point_methods[]
  */
 const zend_function_entry opencv_point_methods[] = {
-        PHP_ME(opencv_point, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_point, print, NULL, ZEND_ACC_PUBLIC) //todo why Point print method can effect Mat print method
+        PHP_ME(opencv_point, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_point, print, arginfo_void, ZEND_ACC_PUBLIC) //todo why Point print method can effect Mat print method
         PHP_FE_END
 };
 /* }}} */
@@ -108,11 +109,11 @@ void opencv_point_free_obj(zend_object *object)
  * @param value
  * @param cache_slot
  */
-void opencv_point_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_point_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
 
-    zend_string *str = zval_get_string(member);
+    zend_string *str = member;
     char *memberName=ZSTR_VAL(str);
-    opencv_point_object *obj = Z_PHP_POINT_OBJ_P(object);
+    opencv_point_object *obj = get_point_obj(object);
 
     if(strcmp(memberName, "x") == 0 && obj->point->x!=(int)zval_get_long(value)){
         obj->point->x=(int)zval_get_long(value);
@@ -121,7 +122,7 @@ void opencv_point_write_property(zval *object, zval *member, zval *value, void *
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 /**
@@ -139,6 +140,9 @@ void opencv_point_init(int module_number){
     opencv_point_object_handlers.write_property = opencv_point_write_property;
     opencv_point_object_handlers.free_obj = opencv_point_free_obj;
     opencv_point_object_handlers.offset = XtOffsetOf(opencv_point_object, std);
+
+    zend_declare_property_null(opencv_point_ce,"x",sizeof("x") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_point_ce,"y",sizeof("y") - 1,ZEND_ACC_PUBLIC);
 }
 
 
@@ -181,7 +185,10 @@ void opencv_scalar_update_property_by_c_scalar(zval *z,Scalar *scalar){
     add_next_index_double(&val,scalar->val[1]);
     add_next_index_double(&val,scalar->val[2]);
     add_next_index_double(&val,scalar->val[3]);
-    zend_update_property(opencv_scalar_ce, z, "val", sizeof("val")-1, &val);
+    zend_update_property(opencv_scalar_ce, Z_OBJ_P(z), "val", sizeof("val")-1, &val);
+
+    //todo: fix memory problem
+
     /**
      * 数组val在array_init()后refcount=1，
      * 插入成员属性zend_update_property()会自动加一次，变为2，
@@ -206,6 +213,8 @@ PHP_METHOD(opencv_scalar, __construct)
     Scalar scalar = Scalar((int)value1, (int)value2, (int)value3, (int)value4);
     obj->scalar = new Scalar(scalar);
     opencv_scalar_update_property_by_c_scalar(getThis(), obj->scalar);
+
+    //todo: fix memory problem
 }
 
 
@@ -226,8 +235,8 @@ PHP_METHOD(opencv_scalar, print)
  * opencv_scalar_methods[]
  */
 const zend_function_entry opencv_scalar_methods[] = {
-        PHP_ME(opencv_scalar, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_scalar, print, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_scalar, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_scalar, print, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */
@@ -247,6 +256,11 @@ void opencv_scalar_init(int module_number){
     opencv_scalar_object_handlers.clone_obj = NULL;
     opencv_scalar_object_handlers.free_obj = opencv_scalar_free_obj;
     opencv_scalar_object_handlers.offset = XtOffsetOf(opencv_scalar_object, std);
+
+    //todo: fix memory problem
+
+    zval *val = (zval*)malloc(sizeof(zval)); /* empty zval */
+    zend_declare_property(opencv_scalar_ce,"val",sizeof("val") - 1, val, ZEND_ACC_PUBLIC);
 }
 
 
@@ -279,8 +293,8 @@ void opencv_size_free_obj(zend_object *object)
 }
 
 void opencv_size_update_property_by_c_size(zval *z, Size *size){
-    zend_update_property_long(opencv_size_ce, z, "width", sizeof("width")-1, size->width);
-    zend_update_property_long(opencv_size_ce, z, "height", sizeof("height")-1, size->height);
+    zend_update_property_long(opencv_size_ce, Z_OBJ_P(z), "width", sizeof("width")-1, size->width);
+    zend_update_property_long(opencv_size_ce, Z_OBJ_P(z), "height", sizeof("height")-1, size->height);
 }
 
 
@@ -319,8 +333,8 @@ PHP_METHOD(opencv_size, print)
  * opencv_size_methods[]
  */
 const zend_function_entry opencv_size_methods[] = {
-        PHP_ME(opencv_size, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_size, print, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_size, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_size, print, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */
@@ -333,11 +347,11 @@ const zend_function_entry opencv_size_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_size_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_size_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
 
-    zend_string *str = zval_get_string(member);
+    zend_string *str = member;
     char *memberName=ZSTR_VAL(str);
-    opencv_size_object *obj = Z_PHP_SIZE_OBJ_P(object);
+    opencv_size_object *obj = get_size_obj(object);
 
     if(strcmp(memberName, "width") == 0 && obj->size->width!=(int)zval_get_long(value)){
         obj->size->width=(int)zval_get_long(value);
@@ -347,6 +361,7 @@ void opencv_size_write_property(zval *object, zval *member, zval *value, void **
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
 
+    return value;
 }
 
 
@@ -365,6 +380,8 @@ void opencv_size_init(int module_number){
     opencv_size_object_handlers.write_property = opencv_size_write_property;
     opencv_size_object_handlers.free_obj = opencv_size_free_obj;
     opencv_size_object_handlers.offset = XtOffsetOf(opencv_size_object, std);
+    zend_declare_property_null(opencv_size_ce,"width",sizeof("width") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_size_ce,"height",sizeof("height") - 1,ZEND_ACC_PUBLIC);
 }
 
 
@@ -397,10 +414,10 @@ void opencv_rect_free_obj(zend_object *object)
 }
 
 void opencv_rect_update_property_by_c_rect(zval *z, Rect *rect){
-    zend_update_property_long(opencv_rect_ce, z, "x", sizeof("x")-1, rect->x);
-    zend_update_property_long(opencv_rect_ce, z, "y", sizeof("y")-1, rect->y);
-    zend_update_property_long(opencv_rect_ce, z, "width", sizeof("width")-1, rect->width);
-    zend_update_property_long(opencv_rect_ce, z, "height", sizeof("height")-1, rect->height);
+    zend_update_property_long(opencv_rect_ce, Z_OBJ_P(z), "x", sizeof("x")-1, rect->x);
+    zend_update_property_long(opencv_rect_ce, Z_OBJ_P(z), "y", sizeof("y")-1, rect->y);
+    zend_update_property_long(opencv_rect_ce, Z_OBJ_P(z), "width", sizeof("width")-1, rect->width);
+    zend_update_property_long(opencv_rect_ce, Z_OBJ_P(z), "height", sizeof("height")-1, rect->height);
 }
 
 /**
@@ -507,12 +524,12 @@ PHP_METHOD(opencv_rect, area)
  * opencv_rect_methods[]
  */
 const zend_function_entry opencv_rect_methods[] = {
-        PHP_ME(opencv_rect, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_rect, print, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_rect, tl, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_rect, br, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_rect, size, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_rect, area, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rect, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_rect, print, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rect, tl, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rect, br, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rect, size, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rect, area, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */
@@ -525,11 +542,11 @@ const zend_function_entry opencv_rect_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval * opencv_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
 
-    zend_string *str = zval_get_string(member);
+    zend_string *str = member;
     char *memberName=ZSTR_VAL(str);
-    opencv_rect_object *obj = Z_PHP_RECT_OBJ_P(object);
+    opencv_rect_object *obj = get_rect_obj(object);
 
     if(strcmp(memberName, "x") == 0 && obj->rect->x!=(int)zval_get_long(value)){
         obj->rect->x=(int)zval_get_long(value);
@@ -542,7 +559,7 @@ void opencv_rect_write_property(zval *object, zval *member, zval *value, void **
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 
@@ -561,6 +578,11 @@ void opencv_rect_init(int module_number){
     opencv_rect_object_handlers.write_property = opencv_rect_write_property;
     opencv_rect_object_handlers.free_obj = opencv_rect_free_obj;
     opencv_rect_object_handlers.offset = XtOffsetOf(opencv_rect_object, std);
+
+    zend_declare_property_null(opencv_rect_ce,"x",sizeof("x") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_rect_ce,"y",sizeof("y") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_rect_ce,"width",sizeof("width") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_rect_ce,"height",sizeof("height") - 1,ZEND_ACC_PUBLIC);
 }
 
 //-----------------------------------【CV\RotatedRect】--------------------------------
@@ -590,11 +612,11 @@ zend_object* opencv_rotated_rect_create_handler(zend_class_entry *type)
  * @param value
  * @param cache_slot
  */
-void opencv_rotated_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_rotated_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
 
-    zend_string *str = zval_get_string(member);
+    zend_string *str = member;
     char *memberName = ZSTR_VAL(str);
-    opencv_rotated_rect_object *obj = Z_PHP_ROTATED_RECT_OBJ_P(object);
+    opencv_rotated_rect_object *obj = get_rotated_rect_obj(object);
     if(strcmp(memberName, "angle") == 0 && obj->rotatedRect->angle != (int)zval_get_long(value)){
         obj->rotatedRect->angle = (float)zval_get_long(value);
     }else if(strcmp(memberName, "center") == 0 ){
@@ -618,7 +640,7 @@ void opencv_rotated_rect_write_property(zval *object, zval *member, zval *value,
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 
@@ -632,21 +654,21 @@ void opencv_rotated_rect_free_obj(zend_object *object)
 
 void opencv_rotated_rect_update_property_by_c_rotated_rect(zval *z, RotatedRect *rotatedRect){
     //RotatedRect->angle
-    zend_update_property_double(opencv_rotated_rect_ce, z, "angle", sizeof("angle")-1, rotatedRect->angle);
+    zend_update_property_double(opencv_rotated_rect_ce, Z_OBJ_P(z), "angle", sizeof("angle")-1, rotatedRect->angle);
     //RotatedRect->center
     zval center_zval;
     object_init_ex(&center_zval, opencv_point_ce);
     opencv_point_object *center_object = Z_PHP_POINT_OBJ_P(&center_zval);
     center_object->point = new Point(rotatedRect->center.x,rotatedRect->center.y);
     opencv_point_update_property_by_c_point(&center_zval, center_object->point);
-    zend_update_property(opencv_rotated_rect_ce, z, "center", sizeof("center")-1, &center_zval);
+    zend_update_property(opencv_rotated_rect_ce, Z_OBJ_P(z), "center", sizeof("center")-1, &center_zval);
     //RotatedRect->size
     zval size_zval;
     object_init_ex(&size_zval, opencv_size_ce);
     opencv_size_object *size_object = Z_PHP_SIZE_OBJ_P(&size_zval);
     size_object->size = new Size(rotatedRect->size);
     opencv_size_update_property_by_c_size(&size_zval, size_object->size);
-    zend_update_property(opencv_rotated_rect_ce, z, "size", sizeof("size")-1, &size_zval);
+    zend_update_property(opencv_rotated_rect_ce, Z_OBJ_P(z), "size", sizeof("size")-1, &size_zval);
     /**
      * 数组center_zval在object_init_ex()后refcount=1，
      * 插入成员属性zend_update_property()会自动加一次，变为2，
@@ -715,8 +737,8 @@ PHP_METHOD(opencv_rotated_rect, points)
  * opencv_rect_methods[]
  */
 const zend_function_entry opencv_rotated_rect_methods[] = {
-        PHP_ME(opencv_rotated_rect, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_rotated_rect, points, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_rotated_rect, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_rotated_rect, points, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */
