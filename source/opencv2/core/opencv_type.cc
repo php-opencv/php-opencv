@@ -340,11 +340,9 @@ const zend_function_entry opencv_size_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_size_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-
-    zend_string *str = zval_get_string(member);
-    char *memberName=ZSTR_VAL(str);
-    opencv_size_object *obj = Z_PHP_SIZE_OBJ_P(object);
+zval *opencv_size_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
+    char *memberName=ZSTR_VAL(member);
+    opencv_size_object *obj = get_size_obj(object);
 
     if(strcmp(memberName, "width") == 0 && obj->size->width!=(int)zval_get_long(value)){
         obj->size->width=(int)zval_get_long(value);
@@ -354,6 +352,7 @@ void opencv_size_write_property(zval *object, zval *member, zval *value, void **
     //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
 
+    return value;
 }
 
 
@@ -534,11 +533,9 @@ const zend_function_entry opencv_rect_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-
-    zend_string *str = zval_get_string(member);
-    char *memberName=ZSTR_VAL(str);
-    opencv_rect_object *obj = Z_PHP_RECT_OBJ_P(object);
+zval * opencv_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
+    char *memberName=ZSTR_VAL(member);
+    opencv_rect_object *obj = get_rect_obj(object);
 
     if(strcmp(memberName, "x") == 0 && obj->rect->x!=(int)zval_get_long(value)){
         obj->rect->x=(int)zval_get_long(value);
@@ -604,11 +601,9 @@ zend_object* opencv_rotated_rect_create_handler(zend_class_entry *type)
  * @param value
  * @param cache_slot
  */
-void opencv_rotated_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-
-    zend_string *str = zval_get_string(member);
-    char *memberName = ZSTR_VAL(str);
-    opencv_rotated_rect_object *obj = Z_PHP_ROTATED_RECT_OBJ_P(object);
+zval *opencv_rotated_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
+    char *memberName = ZSTR_VAL(member);
+    opencv_rotated_rect_object *obj = get_rotated_rect_obj(object);
     if(strcmp(memberName, "angle") == 0 && obj->rotatedRect->angle != (int)zval_get_long(value)){
         obj->rotatedRect->angle = (float)zval_get_long(value);
     }else if(strcmp(memberName, "center") == 0 ){

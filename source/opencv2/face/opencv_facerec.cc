@@ -123,7 +123,6 @@ PHP_METHOD(opencv_lbph_face_recognizer, predict)
 
     zval *confidence_real_zval;
 
-    //todo: fix memory problem
     if (confidence_zval != NULL) {
         confidence_real_zval = Z_REFVAL_P(confidence_zval);
         zval_ptr_dtor(confidence_real_zval);
