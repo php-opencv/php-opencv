@@ -1,6 +1,6 @@
 FROM ubuntu:20.10
 
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt-get install --reinstall dpkg && apt install -y wget cmake git php-common php-cli php-dev pkg-config
+RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt-get install -y --reinstall dpkg && apt install -y wget cmake git php-common php-cli php-dev pkg-config
 
 RUN wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb && dpkg -i opencv_4.5.0_amd64.deb && rm opencv_4.5.0_amd64.deb
 
