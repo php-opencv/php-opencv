@@ -108,7 +108,7 @@ void opencv_point_free_obj(zend_object *object)
  * @param value
  * @param cache_slot
  */
-void opencv_point_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_point_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 
     zend_string *str = zval_get_string(member);
     char *memberName=ZSTR_VAL(str);
@@ -121,7 +121,7 @@ void opencv_point_write_property(zval *object, zval *member, zval *value, void *
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 /**
@@ -333,7 +333,7 @@ const zend_function_entry opencv_size_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_size_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_size_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 
     zend_string *str = zval_get_string(member);
     char *memberName=ZSTR_VAL(str);
@@ -346,7 +346,7 @@ void opencv_size_write_property(zval *object, zval *member, zval *value, void **
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 
@@ -525,7 +525,7 @@ const zend_function_entry opencv_rect_methods[] = {
  * @param value
  * @param cache_slot
  */
-void opencv_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 
     zend_string *str = zval_get_string(member);
     char *memberName=ZSTR_VAL(str);
@@ -542,7 +542,7 @@ void opencv_rect_write_property(zval *object, zval *member, zval *value, void **
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 
@@ -590,7 +590,7 @@ zend_object* opencv_rotated_rect_create_handler(zend_class_entry *type)
  * @param value
  * @param cache_slot
  */
-void opencv_rotated_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+zval *opencv_rotated_rect_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 
     zend_string *str = zval_get_string(member);
     char *memberName = ZSTR_VAL(str);
@@ -618,7 +618,7 @@ void opencv_rotated_rect_write_property(zval *object, zval *member, zval *value,
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-
+    return value;
 }
 
 
