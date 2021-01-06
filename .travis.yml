@@ -1,3 +1,4 @@
+language: php
 sudo: required
 
 services:
