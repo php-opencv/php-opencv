@@ -224,21 +224,24 @@ PHP_METHOD(opencv_file_storage, is_opened){
     RETURN_BOOL(obj->fileStorage->isOpened());
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 /**
  * opencv_file_storage_methods[]
  */
 const zend_function_entry opencv_file_storage_methods[] = {
-        PHP_ME(opencv_file_storage, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_file_storage, open, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_file_storage, write, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_file_storage, read, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_file_storage, release, NULL, ZEND_ACC_PUBLIC)
-        PHP_MALIAS(opencv_file_storage, isOpened ,is_opened, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_file_storage, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_file_storage, open, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_file_storage, write, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_file_storage, read, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_file_storage, release, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_MALIAS(opencv_file_storage, isOpened ,is_opened, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */
 
-zval *opencv_file_storage_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
+zval *opencv_file_storage_read_property(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv){
 //    std::cout<<"opencv_file_storage_read_property"<<std::endl;
     return std_object_handlers.read_property(object, member, type, cache_slot, rv);
 

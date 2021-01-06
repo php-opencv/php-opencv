@@ -221,15 +221,17 @@ PHP_METHOD(opencv_dnn_net, getLayersCount)
     RETURN_LONG(count);
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
 
 /**
  * opencv_dnn_net_methods[]
  */
 const zend_function_entry opencv_dnn_net_methods[] = {
-        PHP_ME(opencv_dnn_net, setInput, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_dnn_net, forward, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_dnn_net, getLayerNames, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_dnn_net, getLayersCount, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_dnn_net, setInput, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_dnn_net, forward, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_dnn_net, getLayerNames, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_dnn_net, getLayersCount, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
 /* }}} */

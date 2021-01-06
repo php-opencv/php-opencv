@@ -14,7 +14,7 @@ var_dump($element);
 $element->print();
 
 --EXPECT--
-object(CV\Mat)#3 (4) {
+object(CV\Mat)#3 (5) {
   ["type":"CV\Mat":private]=>
   int(0)
   ["rows"]=>
@@ -23,6 +23,8 @@ object(CV\Mat)#3 (4) {
   int(7)
   ["dims"]=>
   int(2)
+  ["shape"]=>
+  NULL
 }
 [  0,   0,   0,   1,   0,   0,   0;
    0,   1,   1,   1,   1,   1,   0;

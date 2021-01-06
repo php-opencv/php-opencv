@@ -132,7 +132,7 @@ opencv_fcall_info_cb * opencv_fcall_info_cb_create(zend_fcall_info *fci_ptr, zen
     memcpy(cb->fci_cache, fci_cache_ptr, sizeof(zend_fcall_info_cache));
     Z_TRY_ADDREF(cb->fci->function_name);//todo 滑动调或窗口销毁是释放内存
     cb->fci->param_count = 0;
-    cb->fci->no_separation = 1;
+    //cb->fci->no_separation = 1;
     cb->fci->retval = NULL;
 
     return cb;
@@ -209,7 +209,7 @@ PHP_FUNCTION(opencv_get_track_bar_pos){
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &trackbarname, &trackbarname_len, &winname, &winname_len) == FAILURE) {
         return;
     }
-    RETURN_LONG(getTrackbarPos(trackbarname, winname))
+    RETURN_LONG(getTrackbarPos(trackbarname, winname));
 }
 
 

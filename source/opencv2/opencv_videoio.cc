@@ -179,13 +179,16 @@ PHP_METHOD(opencv_video_capture, read)
     RETURN_BOOL(result);
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 /**
  * opencv_video_capture_methods[]
  */
 const zend_function_entry opencv_video_capture_methods[] = {
-        PHP_ME(opencv_video_capture, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-        PHP_ME(opencv_video_capture, open, NULL, ZEND_ACC_PUBLIC)
-        PHP_MALIAS(opencv_video_capture, isOpened ,is_opened, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_video_capture, __construct, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+        PHP_ME(opencv_video_capture, open, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_MALIAS(opencv_video_capture, isOpened ,is_opened, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_video_capture, read, opencv_video_capture_read_arginfo, ZEND_ACC_PUBLIC)
         PHP_FE_END
 };
