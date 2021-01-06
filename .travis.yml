@@ -8,3 +8,7 @@ before_install:
 
 script:
   - docker build .
+
+branches:
+  only:
+    - master
