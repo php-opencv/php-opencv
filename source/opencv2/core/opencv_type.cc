@@ -110,9 +110,7 @@ void opencv_point_free_obj(zend_object *object)
  * @param cache_slot
  */
 zval *opencv_point_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
-
-    zend_string *str = member;
-    char *memberName=ZSTR_VAL(str);
+    char *memberName=ZSTR_VAL(member);
     opencv_point_object *obj = get_point_obj(object);
 
     if(strcmp(memberName, "x") == 0 && obj->point->x!=(int)zval_get_long(value)){
@@ -120,7 +118,7 @@ zval *opencv_point_write_property(zend_object *object, zend_string *member, zval
     }else if(strcmp(memberName, "y") == 0 && obj->point->y!=(int)zval_get_long(value)){
         obj->point->y=(int)zval_get_long(value);
     }
-    zend_string_release(str);//free zend_string not memberName(zend_string->val)
+    //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
     return value;
 }
@@ -348,9 +346,7 @@ const zend_function_entry opencv_size_methods[] = {
  * @param cache_slot
  */
 zval *opencv_size_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
-
-    zend_string *str = member;
-    char *memberName=ZSTR_VAL(str);
+    char *memberName=ZSTR_VAL(member);
     opencv_size_object *obj = get_size_obj(object);
 
     if(strcmp(memberName, "width") == 0 && obj->size->width!=(int)zval_get_long(value)){
@@ -358,7 +354,7 @@ zval *opencv_size_write_property(zend_object *object, zend_string *member, zval 
     }else if(strcmp(memberName, "height") == 0 && obj->size->height!=(int)zval_get_long(value)){
         obj->size->height=(int)zval_get_long(value);
     }
-    zend_string_release(str);//free zend_string not memberName(zend_string->val)
+    //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
 
     return value;
@@ -543,9 +539,7 @@ const zend_function_entry opencv_rect_methods[] = {
  * @param cache_slot
  */
 zval * opencv_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
-
-    zend_string *str = member;
-    char *memberName=ZSTR_VAL(str);
+    char *memberName=ZSTR_VAL(member);
     opencv_rect_object *obj = get_rect_obj(object);
 
     if(strcmp(memberName, "x") == 0 && obj->rect->x!=(int)zval_get_long(value)){
@@ -557,7 +551,7 @@ zval * opencv_rect_write_property(zend_object *object, zend_string *member, zval
     }else if(strcmp(memberName, "height") == 0 && obj->rect->height!=(int)zval_get_long(value)){
         obj->rect->height=(int)zval_get_long(value);
     }
-    zend_string_release(str);//free zend_string not memberName(zend_string->val)
+    //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
     return value;
 }
@@ -613,9 +607,7 @@ zend_object* opencv_rotated_rect_create_handler(zend_class_entry *type)
  * @param cache_slot
  */
 zval *opencv_rotated_rect_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
-
-    zend_string *str = member;
-    char *memberName = ZSTR_VAL(str);
+    char *memberName = ZSTR_VAL(member);
     opencv_rotated_rect_object *obj = get_rotated_rect_obj(object);
     if(strcmp(memberName, "angle") == 0 && obj->rotatedRect->angle != (int)zval_get_long(value)){
         obj->rotatedRect->angle = (float)zval_get_long(value);
@@ -638,7 +630,7 @@ zval *opencv_rotated_rect_write_property(zend_object *object, zend_string *membe
             opencv_throw_exception("set property size only expect param is Size object.");
         }
     }
-    zend_string_release(str);//free zend_string not memberName(zend_string->val)
+    //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
     return value;
 }

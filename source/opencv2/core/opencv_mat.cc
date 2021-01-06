@@ -830,16 +830,14 @@ const zend_function_entry opencv_mat_methods[] = {
  * @param cache_slot
  */
 zval *opencv_mat_write_property(zend_object *object, zend_string *member, zval *value, void **cache_slot){
-
-    zend_string *str = member;
-    char *memberName=ZSTR_VAL(str);
+    char *memberName=ZSTR_VAL(member);
     opencv_mat_object *obj = get_mat_obj(object);
     if(strcmp(memberName, "cols") == 0 && obj->mat->cols!=(int)zval_get_long(value)){
         obj->mat->cols=(int)zval_get_long(value);
     }else if(strcmp(memberName, "rows") == 0 && obj->mat->rows!=(int)zval_get_long(value)){
         obj->mat->rows=(int)zval_get_long(value);
     }
-    zend_string_release(str);//free zend_string not memberName(zend_string->val)
+    //zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
     return value;
 }
@@ -860,7 +858,7 @@ void opencv_mat_init(void){
 
     zend_declare_property_null(opencv_mat_ce,"type",sizeof("type") - 1,ZEND_ACC_PRIVATE);//private Mat->type
     zend_declare_property_null(opencv_mat_ce,"rows",sizeof("rows") - 1,ZEND_ACC_PUBLIC);
-    zend_declare_property_null(opencv_mat_ce,"cols",sizeof("rows") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_mat_ce,"cols",sizeof("cols") - 1,ZEND_ACC_PUBLIC);
     zend_declare_property_null(opencv_mat_ce,"dims",sizeof("dims") - 1,ZEND_ACC_PUBLIC);
     zend_declare_property_null(opencv_mat_ce,"shape",sizeof("shape") - 1,ZEND_ACC_PUBLIC);
     //zval *cd = (zval*)malloc(sizeof(zval)); /* empty zval */
