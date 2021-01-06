@@ -5,9 +5,9 @@
 ### Easy installation on ubuntu 18.04 LTS from packages (approximately 1 minute):
 ```
 apt update && apt install -y wget && \
-wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.0.1_amd64.deb && dpkg -i opencv_4.0.1_amd64.deb && rm opencv_4.0.1_amd64.deb && \
-wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/php-opencv_7.2-4.0.1_amd64.deb && dpkg -i php-opencv_7.2-4.0.1_amd64.deb && rm php-opencv_7.2-4.0.1_amd64.deb && \
-echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
+wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb && dpkg -i opencv_4.5.0_amd64.deb && rm opencv_4.5.0_amd64.deb && \
+wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/php-opencv_7.4-4.5.0_amd64.deb && dpkg -i php-opencv_7.4-4.5.0_amd64.deb && rm php-opencv_7.4-4.5.0_amd64.deb && \
+echo "extension=opencv.so" > /etc/php/7.4/cli/conf.d/opencv.ini
 ```
 [All installation options](https://github.com/php-opencv/php-opencv/wiki/Installation)
 
@@ -20,8 +20,8 @@ echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
 - [PHP OpenCV Api](https://phpopencv.org/api/index.html)
 
 ### Requirements
-- OpenCV 4.0.0+ (for OpenCV 3.4 use branch 3.4)
-- PHP 7.0 / 7.1 / 7.2
+- OpenCV 4.0.0+
+- PHP 7.0 / 7.1 / 7.2 / ~~7.3~~ / 7.4 / ~~8.0~~
 
 ### Features
 - [core](https://phpopencv.org/docs/mat.html)
