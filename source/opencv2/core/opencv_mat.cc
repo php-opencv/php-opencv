@@ -783,6 +783,8 @@ PHP_METHOD(opencv_mat, subtract)
     RETURN_ZVAL(&instance,0,0); //return php Mat object
 }
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_void, 0, 0, 0)
+ZEND_END_ARG_INFO()
 
 /**
  * opencv_mat_methods[]

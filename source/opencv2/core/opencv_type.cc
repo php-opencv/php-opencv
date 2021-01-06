@@ -185,7 +185,6 @@ void opencv_scalar_update_property_by_c_scalar(zval *z,Scalar *scalar){
     add_next_index_double(&val,scalar->val[3]);
     zend_update_property(opencv_scalar_ce, Z_OBJ_P(z), "val", sizeof("val")-1, &val);
 
-    //todo: fix memory problem
 
     /**
      * 数组val在array_init()后refcount=1，
@@ -211,8 +210,6 @@ PHP_METHOD(opencv_scalar, __construct)
     Scalar scalar = Scalar((int)value1, (int)value2, (int)value3, (int)value4);
     obj->scalar = new Scalar(scalar);
     opencv_scalar_update_property_by_c_scalar(getThis(), obj->scalar);
-
-    //todo: fix memory problem
 }
 
 
@@ -254,8 +251,6 @@ void opencv_scalar_init(int module_number){
     opencv_scalar_object_handlers.clone_obj = NULL;
     opencv_scalar_object_handlers.free_obj = opencv_scalar_free_obj;
     opencv_scalar_object_handlers.offset = XtOffsetOf(opencv_scalar_object, std);
-
-    //todo: fix memory problem
 
     zval *val = (zval*)malloc(sizeof(zval)); /* empty zval */
     zend_declare_property(opencv_scalar_ce,"val",sizeof("val") - 1, val, ZEND_ACC_PUBLIC);
