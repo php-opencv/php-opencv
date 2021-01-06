@@ -1,4 +1,4 @@
-## PHP-OPENCV - PHP extension for Opencv
+## PHP-OPENCV - PHP extension for OpenCV
 
 [![Build Status](https://travis-ci.org/php-opencv/php-opencv.svg?branch=master)](https://travis-ci.org/php-opencv/php-opencv) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
 
@@ -34,6 +34,7 @@ echo "extension=opencv.so" > /etc/php/7.4/cli/conf.d/opencv.ini
 
 ### Helper for autocomplete and highlighting in your IDE
 - [phpdoc file](https://github.com/php-opencv/php-opencv-examples/blob/master/phpdoc.php)
+- [php-opencv-ide-helper](https://github.com/hihozhou/php-opencv-ide-helper)
 
 ### Contributors
 - [@morozovsk](https://github.com/morozovsk)
