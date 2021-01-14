@@ -827,7 +827,7 @@ const zend_function_entry opencv_mat_methods[] = {
  * @param value
  * @param cache_slot
  */
-void *opencv_mat_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+void opencv_mat_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 
     zend_string *str = zval_get_string(member);
     char *memberName=ZSTR_VAL(str);
