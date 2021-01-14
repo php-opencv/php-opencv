@@ -840,7 +840,6 @@ void opencv_mat_write_property(zval *object, zval *member, zval *value, void **c
     }
     zend_string_release(str);//free zend_string not memberName(zend_string->val)
     std_object_handlers.write_property(object,member,value,cache_slot);
-    return value;
 }
 
 /**
