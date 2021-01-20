@@ -254,6 +254,9 @@ const zend_function_entry opencv_functions[] = {
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromCaffe, ZEND_FN(opencv_dnn_read_net_from_caffe), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTorch, ZEND_FN(opencv_dnn_read_net_from_torch), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTensorflow, ZEND_FN(opencv_dnn_read_net_from_tensorflow), arginfo_void)
+    ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromONNX, ZEND_FN(opencv_dnn_read_net_from_onnx), arginfo_void)
+    ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromModelOptimizer, ZEND_FN(opencv_dnn_read_net_from_model_optimizer), arginfo_void)
+    ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromDarknet, ZEND_FN(opencv_dnn_read_net_from_darknet), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_NS, imdecode, ZEND_FN(opencv_imdecode), arginfo_void)
 	PHP_FE_END	/* Must be the last line in opencv_functions[] */
 };
