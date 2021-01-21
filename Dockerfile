@@ -2,7 +2,7 @@ FROM ubuntu:20.10
 
 RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt install -y wget cmake git php-common pkg-config
 
-RUN apt install -y software-properties-common
+#RUN apt install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 RUN apt update
 RUN export DEBIAN_FRONTEND=noninteractive && apt install -y php8.0 php8.0-dev
