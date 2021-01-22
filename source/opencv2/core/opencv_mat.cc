@@ -205,6 +205,30 @@ PHP_METHOD(opencv_mat, print)
     RETURN_NULL();
 }
 
+/**
+ * print Mat data
+ * @param execute_data
+ * @param return_value
+ */
+PHP_METHOD(opencv_mat, __toString)
+{
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+    //long转cv::Formatter::FormatType类型
+    cv::Formatter::FormatType formatType = static_cast<cv::Formatter::FormatType>(0);
+
+    std::ostringstream stream;
+    stream << format(*(obj->mat), formatType);
+
+    std::string str =  stream.str();
+    const char* chr = str.c_str();
+
+    RETURN_STRING(chr);
+}
+
 
 PHP_METHOD(opencv_mat, type)
 {
@@ -483,7 +507,7 @@ PHP_METHOD(opencv_mat, at)
     long row, col, channel;
     zval *value_zval = NULL;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lll|z", &row, &col, &channel, &value_zval) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ll|lz", &row, &col, &channel, &value_zval) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -796,6 +820,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, channels, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, empty, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, print, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, __toString, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)

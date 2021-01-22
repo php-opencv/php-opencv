@@ -232,10 +232,10 @@ PHP_FUNCTION(opencv_dnn_read_net_from_darknet)
 PHP_METHOD(opencv_dnn_net, setInput)
 {
     zval *image_zval;
-    char *name;
+    char *name = (char*) "";
     size_t name_len;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Os", &image_zval, opencv_mat_ce, &name, &name_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|s", &image_zval, opencv_mat_ce, &name, &name_len) == FAILURE) {
         RETURN_NULL();
     }
 
