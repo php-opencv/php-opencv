@@ -206,11 +206,11 @@ PHP_METHOD(opencv_mat, print)
 }
 
 /**
- * print Mat data
+ * toString Mat data
  * @param execute_data
  * @param return_value
  */
-PHP_METHOD(opencv_mat, __toString)
+PHP_METHOD(opencv_mat, toString)
 {
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
         RETURN_NULL();
@@ -229,6 +229,44 @@ PHP_METHOD(opencv_mat, __toString)
     RETURN_STRING(chr);
 }
 
+/**
+ * toArray Mat data
+ * @param execute_data
+ * @param return_value
+ */
+PHP_METHOD(opencv_mat, toArray)
+{
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+
+    zval shape_zval;
+    array_init(&shape_zval);
+
+    if (obj->mat->isContinuous()) {
+        for(int channel = 0; channel < obj->mat->channels(); channel++)
+        {
+            for(int i = 0; i < obj->mat->total(); i++)
+            {
+                switch(obj->mat->depth()){
+                    case CV_8U:  add_next_index_long(&shape_zval, obj->mat->at<uchar>(i + channel * obj->mat->total())); break;
+                    case CV_8S:  add_next_index_long(&shape_zval, obj->mat->at<schar>(i + channel * obj->mat->total())); break;
+                    case CV_16U: add_next_index_long(&shape_zval, obj->mat->at<ushort>(i + channel * obj->mat->total())); break;
+                    case CV_16S: add_next_index_long(&shape_zval, obj->mat->at<short>(i + channel * obj->mat->total())); break;
+                    case CV_32S: add_next_index_long(&shape_zval, obj->mat->at<int>(i + channel * obj->mat->total())); break;
+                    case CV_32F: add_next_index_double(&shape_zval, obj->mat->at<float>(i + channel * obj->mat->total())); break;
+                    case CV_64F: add_next_index_double(&shape_zval, obj->mat->at<double>(i + channel * obj->mat->total()));break;
+
+                    default: opencv_throw_exception("Wrong Mat type"); break;
+                }
+            }
+        }
+    }
+
+    RETURN_ZVAL(&shape_zval,0,0);
+}
 
 PHP_METHOD(opencv_mat, type)
 {
@@ -820,7 +858,8 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, channels, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, empty, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, print, arginfo_void, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_mat, __toString, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, toString, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, toArray, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
