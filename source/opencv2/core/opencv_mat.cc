@@ -234,7 +234,7 @@ PHP_METHOD(opencv_mat, toString)
  * @param execute_data
  * @param return_value
  */
-PHP_METHOD(opencv_mat, toArray)
+PHP_METHOD(opencv_mat, data)
 {
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
         RETURN_NULL();
@@ -859,7 +859,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, empty, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, print, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, toString, arginfo_void, ZEND_ACC_PUBLIC)
-        PHP_ME(opencv_mat, toArray, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, data, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
