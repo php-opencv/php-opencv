@@ -1,13 +1,15 @@
-FROM ubuntu:20.10
+FROM morozovsk/php-opencv:travis
 
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt install -y wget cmake git php-common pkg-config
+#FROM ubuntu:20.10
+
+#RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt install -y wget cmake git php-common pkg-config
 
 #RUN apt install -y software-properties-common
-RUN add-apt-repository ppa:ondrej/php
-RUN apt update
-RUN export DEBIAN_FRONTEND=noninteractive && apt install -y php8.0 php8.0-dev
+#RUN add-apt-repository ppa:ondrej/php
+#RUN apt update
+#RUN export DEBIAN_FRONTEND=noninteractive && apt install -y php8.0 php8.0-dev
 
-RUN wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb && dpkg -i opencv_4.5.0_amd64.deb && rm opencv_4.5.0_amd64.deb
+#RUN wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb && dpkg -i opencv_4.5.0_amd64.deb && rm opencv_4.5.0_amd64.deb
 
 RUN git clone https://github.com/php-opencv/php-opencv.git
 
