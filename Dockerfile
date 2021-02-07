@@ -1,6 +1,6 @@
 FROM morozovsk/php-opencv:travis
 
-#FROM ubuntu:20.10
+#FROM ubuntu:20.04
 
 #RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt install -y wget cmake git php-common pkg-config
 
