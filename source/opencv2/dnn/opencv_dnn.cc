@@ -250,10 +250,15 @@ PHP_METHOD(opencv_dnn_net, setInput)
 PHP_METHOD(opencv_dnn_net, forward)
 {
     zval *image_zval;
-    char *name;
+    char *name = (char*) "";
+    size_t name_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|s", &name, &name_len) == FAILURE) {
+        RETURN_NULL();
+    }
 
     opencv_dnn_net_object *obj = Z_PHP_DNN_NET_OBJ_P(getThis());
-    Mat image = obj->DNNNet.forward();
+    Mat image = obj->DNNNet.forward(name);
 
     zval instance;
     object_init_ex(&instance, opencv_mat_ce);
