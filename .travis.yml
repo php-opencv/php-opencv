@@ -1,14 +1,17 @@
 language: php
-sudo: required
 
-services:
-  - docker
+php:
+  - 8.0
 
-before_install:
-  - docker pull ubuntu:20.04
+install:
+  - apt-get install -y opencv
+  - phpize
+  - ./configure
+  - make
+  - make install
 
 script:
-  - docker build .
+  - make test
 
 branches:
   only:
