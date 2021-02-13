@@ -51,7 +51,7 @@ PHP_FUNCTION(opencv_dnn_blob_from_image)
 {
     zval *image_zval, *size_zval, *mean_zval;
     double scalefactor = 1.;
-    bool swapRB = true, crop = true;
+    bool swapRB = false, crop = false;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "OdOO|bb",
         &image_zval, opencv_mat_ce,
