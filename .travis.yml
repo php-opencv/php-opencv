@@ -4,7 +4,8 @@ php:
   - 8.0
 
 install:
-  - sudo apt-get install -y opencv
+  - wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb
+  - sudo dpkg -i opencv_4.5.0_amd64.deb
   - phpize
   - ./configure
   - make
