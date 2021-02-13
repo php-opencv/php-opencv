@@ -31,3 +31,6 @@ PHP_FUNCTION(opencv_dnn_blob_from_image);
 PHP_FUNCTION(opencv_dnn_read_net_from_torch);
 PHP_FUNCTION(opencv_dnn_read_net_from_caffe);
 PHP_FUNCTION(opencv_dnn_read_net_from_tensorflow);
+PHP_FUNCTION(opencv_dnn_read_net_from_onnx);
+PHP_FUNCTION(opencv_dnn_read_net_from_model_optimizer);
+PHP_FUNCTION(opencv_dnn_read_net_from_darknet);

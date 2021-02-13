@@ -51,7 +51,7 @@ PHP_FUNCTION(opencv_dnn_blob_from_image)
 {
     zval *image_zval, *size_zval, *mean_zval;
     double scalefactor = 1.;
-    bool swapRB = true, crop = true;
+    bool swapRB = false, crop = false;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "OdOO|bb",
         &image_zval, opencv_mat_ce,
@@ -154,13 +154,88 @@ PHP_FUNCTION(opencv_dnn_read_net_from_tensorflow)
     RETURN_ZVAL(&instance,0,0);
 }
 
+PHP_FUNCTION(opencv_dnn_read_net_from_onnx)
+{
+    char *filename;
+    size_t filename_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &filename, &filename_len) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    zval instance;
+    object_init_ex(&instance, opencv_dnn_net_ce);
+    opencv_dnn_net_object *obj = Z_PHP_DNN_NET_OBJ_P(&instance);
+    obj->DNNNet = readNetFromONNX(filename);
+
+    RETURN_ZVAL(&instance,0,0);
+}
+
+PHP_FUNCTION(opencv_dnn_read_net_from_model_optimizer)
+{
+    char *xml, *bin;
+    size_t xml_len, bin_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &xml, &xml_len, &bin, &bin_len) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    ifstream xmlFile;
+    xmlFile.open(xml);//open the input file
+    stringstream xmlStream;
+    xmlStream << xmlFile.rdbuf();//read the file
+    string xmlData = xmlStream.str();
+
+    ifstream binFile;
+    binFile.open(bin, ios::binary);//open the input file
+    stringstream binStream;
+    binStream << binFile.rdbuf();//read the file
+    string binData = binStream.str();
+
+    zval instance;
+    object_init_ex(&instance, opencv_dnn_net_ce);
+    opencv_dnn_net_object *obj = Z_PHP_DNN_NET_OBJ_P(&instance);
+
+    obj->DNNNet = readNetFromModelOptimizer(xmlData, binData);
+
+    RETURN_ZVAL(&instance,0,0);
+}
+
+PHP_FUNCTION(opencv_dnn_read_net_from_darknet)
+{
+    char *cfg, *bin;
+    size_t cfg_len, bin_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &cfg, &cfg_len, &bin, &bin_len) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    ifstream cfgFile;
+    cfgFile.open(cfg);//open the input file
+    stringstream cfgStream;
+    cfgStream << cfgFile.rdbuf();//read the file
+    string cfgData = cfgStream.str();
+
+    ifstream binFile;
+    binFile.open(bin, ios::binary);//open the input file
+    stringstream binStream;
+    binStream << binFile.rdbuf();//read the file
+    string binData = binStream.str();
+
+    zval instance;
+    object_init_ex(&instance, opencv_dnn_net_ce);
+    opencv_dnn_net_object *obj = Z_PHP_DNN_NET_OBJ_P(&instance);
+
+    //obj->DNNNet = readNetFromDarknet(cfgData.c_str(), cfgData.size());
+    obj->DNNNet = readNetFromDarknet(cfgData.c_str(), cfgData.size(), binData.c_str(), binData.size());
+
+    RETURN_ZVAL(&instance,0,0);
+}
+
 PHP_METHOD(opencv_dnn_net, setInput)
 {
     zval *image_zval;
-    char *name;
+    char *name = (char*) "";
     size_t name_len;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Os", &image_zval, opencv_mat_ce, &name, &name_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|s", &image_zval, opencv_mat_ce, &name, &name_len) == FAILURE) {
         RETURN_NULL();
     }
 
@@ -175,10 +250,15 @@ PHP_METHOD(opencv_dnn_net, setInput)
 PHP_METHOD(opencv_dnn_net, forward)
 {
     zval *image_zval;
-    char *name;
+    char *name = (char*) "";
+    size_t name_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|s", &name, &name_len) == FAILURE) {
+        RETURN_NULL();
+    }
 
     opencv_dnn_net_object *obj = Z_PHP_DNN_NET_OBJ_P(getThis());
-    Mat image = obj->DNNNet.forward();
+    Mat image = obj->DNNNet.forward(name);
 
     zval instance;
     object_init_ex(&instance, opencv_mat_ce);

@@ -209,7 +209,7 @@ PHP_FUNCTION(opencv_get_track_bar_pos){
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &trackbarname, &trackbarname_len, &winname, &winname_len) == FAILURE) {
         return;
     }
-    RETURN_LONG(getTrackbarPos(trackbarname, winname))
+    RETURN_LONG(getTrackbarPos(trackbarname, winname));
 }
 
 
