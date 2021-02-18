@@ -223,6 +223,7 @@ const zend_function_entry opencv_functions[] = {
     ZEND_NS_NAMED_FE(OPENCV_NS, log, ZEND_FN(opencv_log), opencv_log_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, normalize, ZEND_FN(opencv_normalize), opencv_normalize_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, norm, ZEND_FN(opencv_norm), opencv_norm_arginfo)
+    ZEND_NS_NAMED_FE(OPENCV_NS, meanStdDev, ZEND_FN(opencv_mean_std_dev), opencv_mean_std_dev_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, equalizeHist, ZEND_FN(opencv_equalize_hist), opencv_equalize_hist_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, resize, ZEND_FN(opencv_resize), opencv_resize_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, putText, ZEND_FN(opencv_put_text), arginfo_void)

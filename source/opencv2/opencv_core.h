@@ -111,4 +111,11 @@ ZEND_BEGIN_ARG_INFO_EX(opencv_lut_arginfo, 0, 0, 3)
 ZEND_END_ARG_INFO()
 PHP_FUNCTION(opencv_lut);
 
+ZEND_BEGIN_ARG_INFO_EX(opencv_mean_std_dev_arginfo, 0, 0, 3)
+                ZEND_ARG_INFO(0, src)
+                ZEND_ARG_INFO(1, mean)
+                ZEND_ARG_INFO(1, sdv)
+ZEND_END_ARG_INFO()
+PHP_FUNCTION(opencv_mean_std_dev);
+
 #endif //OPENCV_CORE_H
