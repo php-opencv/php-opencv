@@ -13,8 +13,8 @@
 - [core](https://github.com/hihozhou/php-opencv)
 
 #### Documentation
-- [PHP OpenCV Doc](https://phpopencv.org/docs/index.html)
-- [PHP OpenCV Api](https://phpopencv.org/api/index.html)
+- [PHP OpenCV Doc](https://phpopencv.github.io/docs/)
+- [PHP OpenCV Api](https://phpopencv.github.io/api/)
 
 #### Requirements
 - OpenCV 4.0.0+
