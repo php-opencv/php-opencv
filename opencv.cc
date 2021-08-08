@@ -258,6 +258,7 @@ const zend_function_entry opencv_functions[] = {
     ZEND_NS_NAMED_FE(OPENCV_NS, getPerspectiveTransform, ZEND_FN(opencv_get_perspective_transform), opencv_get_perspective_transform_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, warpPerspective, ZEND_FN(opencv_warp_perspective), opencv_warp_perspective_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, blobFromImage, ZEND_FN(opencv_dnn_blob_from_image), arginfo_void)
+    ZEND_NS_NAMED_FE(OPENCV_DNN_NS, blobFromImages, ZEND_FN(opencv_dnn_blob_from_images), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromCaffe, ZEND_FN(opencv_dnn_read_net_from_caffe), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTorch, ZEND_FN(opencv_dnn_read_net_from_torch), arginfo_void)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTensorflow, ZEND_FN(opencv_dnn_read_net_from_tensorflow), arginfo_void)
