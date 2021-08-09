@@ -188,15 +188,14 @@ PHP_METHOD(opencv_mat, __construct)
 PHP_METHOD(opencv_mat, createWithDims)
 {
     long dims, type;
-    zval *sizes;
-    zval *sizes_val;
+    zval *sizes_zval;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lal", &dims, &sizes, &type) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lal", &dims, &sizes_zval, &type) == FAILURE) {
         RETURN_NULL();
     }
 
     int sizes_arr[dims];
-    HashTable *sizes_ht = Z_ARRVAL_P(sizes);
+    HashTable *sizes_ht = Z_ARRVAL_P(sizes_zval);
 
     if (zend_hash_num_elements(sizes_ht) < dims)
     {
@@ -204,10 +203,11 @@ PHP_METHOD(opencv_mat, createWithDims)
 
     }
 
+    zval *size_zval;
     int i = 0;
-    ZEND_HASH_FOREACH_VAL(sizes_ht, sizes_val) {
-        if(Z_TYPE_P(sizes_val) == IS_LONG) {
-            sizes_arr[i] = Z_LVAL(*sizes_val);
+    ZEND_HASH_FOREACH_VAL(sizes_ht, size_zval) {
+        if(Z_TYPE_P(size_zval) == IS_LONG) {
+            sizes_arr[i] = Z_LVAL(*size_zval);
             i++;
         }
     }
