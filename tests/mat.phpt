@@ -22,6 +22,8 @@ $ones = $ones->plus(3);
 $ones->print(Formatter::FMT_PYTHON);
 $ones = $ones->divide(1/9);
 $ones->print(Formatter::FMT_PYTHON);
+$mat2 = Mat::createWithDims(4, [3,5,2,4], CV_8UC3);
+var_dump($mat2);
 ?>
 --EXPECT--
 object(CV\Mat)#2 (5) {
@@ -105,3 +107,24 @@ object(CV\Mat)#4 (5) {
  [ 27,  27,  27,  27,  27,  27,  27,  27,  27,  27],
  [ 27,  27,  27,  27,  27,  27,  27,  27,  27,  27],
  [ 27,  27,  27,  27,  27,  27,  27,  27,  27,  27]]
+object(CV\Mat)#5 (5) {
+  ["type":"CV\Mat":private]=>
+  int(16)
+  ["rows"]=>
+  int(-1)
+  ["cols"]=>
+  int(-1)
+  ["dims"]=>
+  int(4)
+  ["shape"]=>
+  array(4) {
+    [0]=>
+    int(3)
+    [1]=>
+    int(5)
+    [2]=>
+    int(2)
+    [3]=>
+    int(4)
+  }
+}
