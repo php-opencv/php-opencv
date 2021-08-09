@@ -185,6 +185,46 @@ PHP_METHOD(opencv_mat, __construct)
     opencv_mat_update_property_by_c_mat(getThis(), obj->mat);
 }
 
+PHP_METHOD(opencv_mat, createWithDims)
+{
+    long dims, type;
+    zval *sizes_zval;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lal", &dims, &sizes_zval, &type) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    int sizes_arr[dims];
+    HashTable *sizes_ht = Z_ARRVAL_P(sizes_zval);
+
+    if (zend_hash_num_elements(sizes_ht) < dims)
+    {
+        opencv_throw_exception("sizes array must be same size with dims");
+
+    }
+
+    zval *size_zval;
+    int i = 0;
+    ZEND_HASH_FOREACH_VAL(sizes_ht, size_zval) {
+        if(Z_TYPE_P(size_zval) == IS_LONG) {
+            sizes_arr[i] = Z_LVAL(*size_zval);
+            i++;
+        }
+    }
+    ZEND_HASH_FOREACH_END();
+
+    zval instance;
+    object_init_ex(&instance, opencv_mat_ce);
+    opencv_mat_object *mat_obj = Z_PHP_MAT_OBJ_P(&instance);
+
+    mat_obj->mat = new Mat((int)dims, (const int *)&sizes_arr, (int)type);
+
+    opencv_mat_update_property_by_c_mat(&instance, mat_obj->mat);
+
+    RETURN_ZVAL(&instance,0,0); //return php Mat object
+}
+
+
 /**
  * print Mat data
  * @param execute_data
@@ -880,6 +920,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_MALIAS(opencv_mat, setTo ,set_to, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, add , arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
         PHP_ME(opencv_mat, subtract , arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+        PHP_ME(opencv_mat, createWithDims, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
         PHP_FE_END
 };
 /* }}} */
