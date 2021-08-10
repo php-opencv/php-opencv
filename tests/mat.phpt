@@ -45,6 +45,9 @@ $mat_data3 = Mat::ones(2,2,CV_8UC1);
 $mat_data3->setData([1,2,3,4]);
 var_dump($mat_data3->dataAt(3));
 
+$mat_data4 = Mat::ones(4,2,CV_8UC1);
+var_dump($mat_data4->total());
+
 ?>
 --EXPECT--
 object(CV\Mat)#2 (5) {
@@ -180,3 +183,4 @@ array(4) {
  [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1],
  [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1]]
 int(4)
+int(8)
