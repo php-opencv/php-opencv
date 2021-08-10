@@ -305,6 +305,37 @@ PHP_METHOD(opencv_mat, data)
     RETURN_ZVAL(&shape_zval,0,0);
 }
 
+PHP_METHOD(opencv_mat, dataAt)
+{
+    long index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &index) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+
+    long data_len = obj->mat->total();
+    int depth = obj->mat->depth();
+    uchar *data = obj->mat->data;
+
+    if (index > data_len-1)
+    {
+        opencv_throw_exception("index overflow");
+    }
+
+    switch(depth) {
+        case CV_8U:   RETURN_LONG(((uchar*)data)[index]); break;
+        case CV_8S:   RETURN_LONG(((schar*)data)[index]); break;
+        case CV_16U:  RETURN_LONG(((ushort*)data)[index]); break;
+        case CV_16S:  RETURN_LONG(((short*)data)[index]); break;
+        case CV_32S:  RETURN_LONG(((int*)data)[index]); break;
+        case CV_32F:  RETURN_DOUBLE(((float*)data)[index]); break;
+        case CV_64F:  RETURN_DOUBLE(((double*)data)[index]); break;
+    }
+
+    RETURN_NULL();
+}
+
 PHP_METHOD(opencv_mat, type)
 {
     opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
@@ -897,6 +928,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, print, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, toString, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, data, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, dataAt, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
