@@ -285,23 +285,20 @@ PHP_METHOD(opencv_mat, data)
     zval shape_zval;
     array_init(&shape_zval);
 
-    if (obj->mat->isContinuous()) {
-        for(int channel = 0; channel < obj->mat->channels(); channel++)
-        {
-            for(int i = 0; i < obj->mat->total(); i++)
-            {
-                switch(obj->mat->depth()){
-                    case CV_8U:  add_next_index_long(&shape_zval, obj->mat->at<uchar>(i + channel * obj->mat->total())); break;
-                    case CV_8S:  add_next_index_long(&shape_zval, obj->mat->at<schar>(i + channel * obj->mat->total())); break;
-                    case CV_16U: add_next_index_long(&shape_zval, obj->mat->at<ushort>(i + channel * obj->mat->total())); break;
-                    case CV_16S: add_next_index_long(&shape_zval, obj->mat->at<short>(i + channel * obj->mat->total())); break;
-                    case CV_32S: add_next_index_long(&shape_zval, obj->mat->at<int>(i + channel * obj->mat->total())); break;
-                    case CV_32F: add_next_index_double(&shape_zval, obj->mat->at<float>(i + channel * obj->mat->total())); break;
-                    case CV_64F: add_next_index_double(&shape_zval, obj->mat->at<double>(i + channel * obj->mat->total()));break;
+    long data_len = obj->mat->total();
+    int depth = obj->mat->depth();
+    uchar *data = obj->mat->data;
 
-                    default: opencv_throw_exception("Wrong Mat type"); break;
-                }
-            }
+    for(int i = 0; i < data_len; i++)
+    {
+        switch(depth) {
+            case CV_8U:   add_next_index_long(&shape_zval, ((uchar*)data)[i]); break;
+            case CV_8S:   add_next_index_long(&shape_zval, ((schar*)data)[i]); break;
+            case CV_16U:  add_next_index_long(&shape_zval, ((ushort*)data)[i]); break;
+            case CV_16S:  add_next_index_long(&shape_zval, ((short*)data)[i]); break;
+            case CV_32S:  add_next_index_long(&shape_zval, ((int*)data)[i]); break;
+            case CV_32F:  add_next_index_double(&shape_zval, ((float*)data)[i]); break;
+            case CV_64F:  add_next_index_double(&shape_zval, ((double*)data)[i]); break;
         }
     }
 
