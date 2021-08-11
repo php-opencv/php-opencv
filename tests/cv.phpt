@@ -13,7 +13,7 @@ var_dump($im);
 //CV::imwrite('2222.png',$im);
 ?>
 --EXPECT--
-object(CV\Mat)#1 (4) {
+object(CV\Mat)#1 (5) {
   ["type":"CV\Mat":private]=>
   int(16)
   ["rows"]=>
@@ -22,4 +22,6 @@ object(CV\Mat)#1 (4) {
   int(50)
   ["dims"]=>
   int(2)
+  ["shape"]=>
+  NULL
 }
