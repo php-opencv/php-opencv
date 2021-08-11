@@ -383,6 +383,26 @@ PHP_METHOD(opencv_mat, setData)
 
     RETURN_NULL();
 }
+
+// NOT SAFE! Can get segfault if "from" Mat is destroyed
+PHP_METHOD(opencv_mat, useDataFrom)
+{
+    zval *from_mat_zval;
+    long offset = 0;
+
+    opencv_mat_object *to_obj = Z_PHP_MAT_OBJ_P(getThis());
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|l", &from_mat_zval, opencv_mat_ce, &offset) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *from_obj = Z_PHP_MAT_OBJ_P(from_mat_zval);
+
+    to_obj->mat->data = from_obj->mat->data + offset*from_obj->mat->elemSize();
+
+    RETURN_NULL();
+}
+
 PHP_METHOD(opencv_mat, type)
 {
     opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
@@ -977,6 +997,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, data, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, dataAt, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, setData, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, useDataFrom, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
