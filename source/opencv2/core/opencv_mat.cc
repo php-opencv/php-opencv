@@ -998,6 +998,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, dataAt, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, setData, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, useDataFrom, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, total, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
