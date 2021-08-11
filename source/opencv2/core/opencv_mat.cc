@@ -1070,9 +1070,3 @@ void opencv_mat_init(void){
     opencv_mat_object_handlers.free_obj = opencv_mat_free_obj;
     opencv_mat_object_handlers.offset = XtOffsetOf(opencv_mat_object, std);
 }
-
-
-
-
-
-
