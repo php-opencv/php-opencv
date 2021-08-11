@@ -78,6 +78,47 @@ PHP_FUNCTION(opencv_dnn_blob_from_image)
     RETURN_ZVAL(&instance,0,0); //return php Mat object
 }
 
+PHP_FUNCTION(opencv_dnn_blob_from_images)
+{
+    zval *images_zval, *size_zval, *mean_zval;
+    double scalefactor = 1.;
+    bool swapRB = false, crop = false;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "adOO|bb",
+        &images_zval,
+        &scalefactor,
+        &size_zval, opencv_size_ce,
+        &mean_zval, opencv_scalar_ce,
+        &swapRB,
+        &crop
+    ) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_size_object *size_object = Z_PHP_SIZE_OBJ_P(size_zval);
+    opencv_scalar_object *mean_object = Z_PHP_SCALAR_OBJ_P(mean_zval);
+
+    HashTable *images_ht = Z_ARRVAL_P(images_zval);
+    std::vector<cv::Mat> images_vec;
+
+    zval *image_zval;
+    ZEND_HASH_FOREACH_VAL(images_ht, image_zval) {
+        if(Z_TYPE_P(image_zval) == IS_OBJECT && Z_OBJCE_P(image_zval)==opencv_mat_ce)
+            images_vec.push_back(*Z_PHP_MAT_OBJ_P(image_zval)->mat);
+    }
+    ZEND_HASH_FOREACH_END();
+
+
+    Mat im = blobFromImages(images_vec, scalefactor, *size_object->size, *mean_object->scalar, swapRB, crop);
+
+    zval instance;
+    object_init_ex(&instance, opencv_mat_ce);
+    opencv_mat_object *new_obj = Z_PHP_MAT_OBJ_P(&instance);
+    new_obj->mat=new Mat(im);
+    opencv_mat_update_property_by_c_mat(&instance, new_obj->mat);
+    RETURN_ZVAL(&instance,0,0); //return php Mat object
+}
+
 PHP_FUNCTION(opencv_dnn_read_net_from_torch)
 {
     char *filename;
