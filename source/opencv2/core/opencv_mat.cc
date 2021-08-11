@@ -962,6 +962,11 @@ void opencv_mat_init(void){
     opencv_mat_object_handlers.write_property = opencv_mat_write_property;
 
     zend_declare_property_null(opencv_mat_ce,"type",sizeof("type") - 1,ZEND_ACC_PRIVATE);//private Mat->type
+    zend_declare_property_null(opencv_mat_ce,"rows",sizeof("rows") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_mat_ce,"cols",sizeof("cols") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_mat_ce,"dims",sizeof("dims") - 1,ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_mat_ce,"shape",sizeof("shape") - 1,ZEND_ACC_PUBLIC);
+
     opencv_mat_object_handlers.free_obj = opencv_mat_free_obj;
     opencv_mat_object_handlers.offset = XtOffsetOf(opencv_mat_object, std);
 }
