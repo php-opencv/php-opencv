@@ -335,6 +335,54 @@ PHP_METHOD(opencv_mat, dataAt)
 
     RETURN_NULL();
 }
+
+PHP_METHOD(opencv_mat, setData)
+{
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "a", &data_zval) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+    int depth = obj->mat->depth();
+    long max_data_len = obj->mat->total() * obj->mat->channels();
+    uchar *orig_data = obj->mat->data;
+
+    HashTable *data_ht = Z_ARRVAL_P(data_zval);
+
+    if (zend_hash_num_elements(data_ht) > max_data_len)
+    {
+        opencv_throw_exception("data too big for thit Mat");
+    }
+
+    zval *val_zval;
+    int i = 0;
+    double val;
+
+    ZEND_HASH_FOREACH_VAL(data_ht, val_zval) {
+        if(Z_TYPE_P(val_zval) == IS_LONG) {
+            val = (double)Z_LVAL(*val_zval);
+        }
+        if(Z_TYPE_P(val_zval) == IS_DOUBLE) {
+            val = Z_DVAL(*val_zval);
+        }
+
+        switch(depth) {
+            case CV_8U:   ((uchar*)orig_data)[i] = (uchar)val; break;
+            case CV_8S:   ((schar*)orig_data)[i] = (schar)val; break;
+            case CV_16U:  ((ushort*)orig_data)[i] = (ushort)val; break;
+            case CV_16S:  ((short*)orig_data)[i] = (short)val; break;
+            case CV_32S:  ((int*)orig_data)[i] = (int)val; break;
+            case CV_32F:  ((float*)orig_data)[i] = (float)val; break;
+            case CV_64F:  ((double*)orig_data)[i] = (double)val; break;
+        }
+
+        i++;
+    }
+    ZEND_HASH_FOREACH_END();
+
+    RETURN_NULL();
+}
 PHP_METHOD(opencv_mat, type)
 {
     opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
@@ -928,6 +976,7 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, toString, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, data, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, dataAt, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, setData, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, arginfo_void, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
