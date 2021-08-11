@@ -205,9 +205,9 @@ PHP_METHOD(opencv_mat, createWithDims)
 
     zval *size_zval;
     int i = 0;
-    ZEND_HASH_FOREACH_VAL(sizes_ht, size_val) {
-        if(Z_TYPE_P(size_val) == IS_LONG) {
-            sizes_arr[i] = Z_LVAL(*size_val);
+    ZEND_HASH_FOREACH_VAL(sizes_ht, size_zval) {
+        if(Z_TYPE_P(size_zval) == IS_LONG) {
+            sizes_arr[i] = Z_LVAL(*size_zval);
             i++;
         }
     }
