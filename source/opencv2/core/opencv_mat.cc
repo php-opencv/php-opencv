@@ -284,27 +284,122 @@ PHP_METHOD(opencv_mat, data)
     zval shape_zval;
     array_init(&shape_zval);
 
-    if (obj->mat->isContinuous()) {
-        for(int channel = 0; channel < obj->mat->channels(); channel++)
-        {
-            for(int i = 0; i < obj->mat->total(); i++)
-            {
-                switch(obj->mat->depth()){
-                    case CV_8U:  add_next_index_long(&shape_zval, obj->mat->at<uchar>(i + channel * obj->mat->total())); break;
-                    case CV_8S:  add_next_index_long(&shape_zval, obj->mat->at<schar>(i + channel * obj->mat->total())); break;
-                    case CV_16U: add_next_index_long(&shape_zval, obj->mat->at<ushort>(i + channel * obj->mat->total())); break;
-                    case CV_16S: add_next_index_long(&shape_zval, obj->mat->at<short>(i + channel * obj->mat->total())); break;
-                    case CV_32S: add_next_index_long(&shape_zval, obj->mat->at<int>(i + channel * obj->mat->total())); break;
-                    case CV_32F: add_next_index_double(&shape_zval, obj->mat->at<float>(i + channel * obj->mat->total())); break;
-                    case CV_64F: add_next_index_double(&shape_zval, obj->mat->at<double>(i + channel * obj->mat->total()));break;
+    long data_len = obj->mat->total();
+    int depth = obj->mat->depth();
+    uchar *data = obj->mat->data;
 
-                    default: opencv_throw_exception("Wrong Mat type"); break;
-                }
-            }
+    for(int i = 0; i < data_len; i++)
+    {
+        switch(depth) {
+            case CV_8U:   add_next_index_long(&shape_zval, ((uchar*)data)[i]); break;
+            case CV_8S:   add_next_index_long(&shape_zval, ((schar*)data)[i]); break;
+            case CV_16U:  add_next_index_long(&shape_zval, ((ushort*)data)[i]); break;
+            case CV_16S:  add_next_index_long(&shape_zval, ((short*)data)[i]); break;
+            case CV_32S:  add_next_index_long(&shape_zval, ((int*)data)[i]); break;
+            case CV_32F:  add_next_index_double(&shape_zval, ((float*)data)[i]); break;
+            case CV_64F:  add_next_index_double(&shape_zval, ((double*)data)[i]); break;
         }
     }
 
     RETURN_ZVAL(&shape_zval,0,0);
+}
+
+PHP_METHOD(opencv_mat, dataAt)
+{
+    long index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &index) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+
+    long data_len = obj->mat->total();
+    int depth = obj->mat->depth();
+    uchar *data = obj->mat->data;
+
+    if (index > data_len-1)
+    {
+        opencv_throw_exception("index overflow");
+    }
+
+    switch(depth) {
+        case CV_8U:   RETURN_LONG(((uchar*)data)[index]); break;
+        case CV_8S:   RETURN_LONG(((schar*)data)[index]); break;
+        case CV_16U:  RETURN_LONG(((ushort*)data)[index]); break;
+        case CV_16S:  RETURN_LONG(((short*)data)[index]); break;
+        case CV_32S:  RETURN_LONG(((int*)data)[index]); break;
+        case CV_32F:  RETURN_DOUBLE(((float*)data)[index]); break;
+        case CV_64F:  RETURN_DOUBLE(((double*)data)[index]); break;
+    }
+
+    RETURN_NULL();
+}
+
+PHP_METHOD(opencv_mat, setData)
+{
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "a", &data_zval) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *obj = Z_PHP_MAT_OBJ_P(getThis());
+    int depth = obj->mat->depth();
+    long max_data_len = obj->mat->total() * obj->mat->channels();
+    uchar *orig_data = obj->mat->data;
+
+    HashTable *data_ht = Z_ARRVAL_P(data_zval);
+
+    if (zend_hash_num_elements(data_ht) > max_data_len)
+    {
+        opencv_throw_exception("data too big for thit Mat");
+    }
+
+    zval *val_zval;
+    int i = 0;
+    double val;
+
+    ZEND_HASH_FOREACH_VAL(data_ht, val_zval) {
+        if(Z_TYPE_P(val_zval) == IS_LONG) {
+            val = (double)Z_LVAL(*val_zval);
+        }
+        if(Z_TYPE_P(val_zval) == IS_DOUBLE) {
+            val = Z_DVAL(*val_zval);
+        }
+
+        switch(depth) {
+            case CV_8U:   ((uchar*)orig_data)[i] = (uchar)val; break;
+            case CV_8S:   ((schar*)orig_data)[i] = (schar)val; break;
+            case CV_16U:  ((ushort*)orig_data)[i] = (ushort)val; break;
+            case CV_16S:  ((short*)orig_data)[i] = (short)val; break;
+            case CV_32S:  ((int*)orig_data)[i] = (int)val; break;
+            case CV_32F:  ((float*)orig_data)[i] = (float)val; break;
+            case CV_64F:  ((double*)orig_data)[i] = (double)val; break;
+        }
+
+        i++;
+    }
+    ZEND_HASH_FOREACH_END();
+
+    RETURN_NULL();
+}
+
+// NOT SAFE! Can get segfault if "from" Mat is destroyed
+PHP_METHOD(opencv_mat, useDataFrom)
+{
+    zval *from_mat_zval;
+    long offset = 0;
+
+    opencv_mat_object *to_obj = Z_PHP_MAT_OBJ_P(getThis());
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|l", &from_mat_zval, opencv_mat_ce, &offset) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *from_obj = Z_PHP_MAT_OBJ_P(from_mat_zval);
+
+    to_obj->mat->data = from_obj->mat->data + offset*from_obj->mat->elemSize();
+
+    RETURN_NULL();
 }
 
 PHP_METHOD(opencv_mat, type)
@@ -897,6 +992,10 @@ const zend_function_entry opencv_mat_methods[] = {
         PHP_ME(opencv_mat, print, NULL, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, toString, NULL, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, data, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, dataAt, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, setData, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, useDataFrom, NULL, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_mat, total, NULL, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, size, NULL, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, clone, NULL, ZEND_ACC_PUBLIC)
         PHP_ME(opencv_mat, ones, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
@@ -970,9 +1069,3 @@ void opencv_mat_init(void){
     opencv_mat_object_handlers.free_obj = opencv_mat_free_obj;
     opencv_mat_object_handlers.offset = XtOffsetOf(opencv_mat_object, std);
 }
-
-
-
-
-
-
