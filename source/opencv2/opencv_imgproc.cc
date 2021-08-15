@@ -379,6 +379,7 @@ PHP_FUNCTION(opencv_resize){
     opencv_size_object *dsize_obj = Z_PHP_SIZE_OBJ_P(dsize_zval);
     try {
         resize(*src_obj->mat, *dst_object->mat, *dsize_obj->size , fx, fy, (int)interpolation);
+        opencv_mat_update_property_by_c_mat(dst_real_zval, dst_object->mat);
     }catch (Exception e){
         opencv_throw_exception(e.what());
     }
