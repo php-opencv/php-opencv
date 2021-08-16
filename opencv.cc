@@ -248,6 +248,7 @@ const zend_function_entry opencv_functions[] = {
     ZEND_NS_NAMED_FE(OPENCV_NS, drawContours, ZEND_FN(opencv_draw_contours), opencv_draw_contours_arginfo)
     ZEND_NS_NAMED_FE(OPENCV_NS, boundingRect, ZEND_FN(opencv_bounding_rect), NULL)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, blobFromImage, ZEND_FN(opencv_dnn_blob_from_image), NULL)
+    ZEND_NS_NAMED_FE(OPENCV_DNN_NS, blobFromImages, ZEND_FN(opencv_dnn_blob_from_images), NULL)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromCaffe, ZEND_FN(opencv_dnn_read_net_from_caffe), NULL)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTorch, ZEND_FN(opencv_dnn_read_net_from_torch), NULL)
     ZEND_NS_NAMED_FE(OPENCV_DNN_NS, readNetFromTensorflow, ZEND_FN(opencv_dnn_read_net_from_tensorflow), NULL)
