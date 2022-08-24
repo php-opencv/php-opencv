@@ -29,7 +29,7 @@ extern "C" {
 extern zend_module_entry opencv_module_entry;
 #define phpext_opencv_ptr &opencv_module_entry
 
-#define PHP_OPENCV_VERSION "0.1.0" /* Replace with version number for your extension */
+#define PHP_OPENCV_VERSION "4.6.0" /* Replace with version number for your extension */
 
 #ifdef PHP_WIN32
 #	define PHP_OPENCV_API __declspec(dllexport)
@@ -41,8 +41,22 @@ extern zend_module_entry opencv_module_entry;
 
 #include <iostream>
 //include opencv code
-#include <opencv2/core/core.hpp>
+#include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
+
+/*
+#include<opencv2/core/hal/hal.hpp>
+#include<opencv2/core/hal/interface.h>
+#include<opencv2/core/utility.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/objdetect/objdetect.hpp>
+#include<opencv2/video/video.hpp>
+#include<opencv2/ml/ml.hpp>
+#include<opencv2/dnn/dnn.hpp>
+#include<opencv2/imgcodecs/imgcodecs.hpp>
+#include<opencv2/videoio/videoio.hpp>
+#include<opencv2/face/facerec.hpp>
+*/
 
 using namespace cv;
 
@@ -50,7 +64,6 @@ using namespace cv;
 #define OPENCV_FACE_NS ZEND_NS_NAME(OPENCV_NS,"Face")
 #define OPENCV_ML_NS ZEND_NS_NAME(OPENCV_NS,"ML")
 #define OPENCV_DNN_NS ZEND_NS_NAME(OPENCV_NS,"DNN")
-
 #define OPENCV_CONNECT(text1,text2) text1##text2
 
 

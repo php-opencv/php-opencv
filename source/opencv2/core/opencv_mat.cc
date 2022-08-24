@@ -194,7 +194,9 @@ PHP_METHOD(opencv_mat, createWithDims)
         RETURN_NULL();
     }
 
-    int sizes_arr[dims];
+	std::vector<long> sizes_arr;
+    //int sizes_arr[dims];
+	
     HashTable *sizes_ht = Z_ARRVAL_P(sizes_zval);
 
     if (zend_hash_num_elements(sizes_ht) < dims)
