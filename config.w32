@@ -1,13 +1,32 @@
 // $Id$
 // vim:ft=javascript
 
-// If your extension references something external, use ARG_WITH
-// ARG_WITH("opencv", "for opencv support", "no");
+ARG_WITH("opencv", "for opencv support", "no");
 
-// Otherwise, use ARG_ENABLE
-// ARG_ENABLE("opencv", "enable opencv support", "no");
+var opencv_source_file="opencv.cc "+
+"source/opencv2/opencv_core.cc "+
+"source/opencv2/opencv_highgui.cc "+
+"source/opencv2/core/opencv_mat.cc "+
+"source/opencv2/core/opencv_utility.cc "+
+"source/opencv2/opencv_imgcodecs.cc "+
+"opencv_exception.cc "+
+"source/opencv2/core/hal/opencv_interface.cc "+
+"source/opencv2/imgcodecs/opencv_imgcodecs_c.cc "+
+"source/opencv2/core/opencv_type.cc "+
+"source/opencv2/opencv_imgproc.cc "+
+"source/opencv2/core/opencv_base.cc "+
+"source/opencv2/core/opencv_persistence.cc "+
+"source/opencv2/opencv_objdetect.cc "+
+"source/opencv2/opencv_videoio.cc "+
+"source/opencv2/opencv_face.cc "+
+"source/opencv2/face/opencv_facerec.cc "+
+"source/opencv2/face/opencv_facemarkLBF.cc "+
+"source/opencv2/core/opencv_cvdef.cc "+
+"source/opencv2/dnn/opencv_dnn.cc "+
+"source/opencv2/opencv_ml.cc"
 
 if (PHP_OPENCV != "no") {
-	EXTENSION("opencv", "opencv.cc", PHP_EXTNAME_SHARED, "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
+	EXTENSION("opencv", opencv_source_file,  "opencv", "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
+}else {
+	WARNING("Opencv not enabled, headers or libraries not found");
 }
-

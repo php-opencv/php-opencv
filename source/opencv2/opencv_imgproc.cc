@@ -146,9 +146,14 @@ PHP_FUNCTION(opencv_fill_poly){
         RETURN_NULL();
     }
 
-    long ncontours = 1;
-    unsigned long point_count = zend_hash_num_elements(Z_ARRVAL_P(points_zval));
+    const long ncontours = 1;
+    long unsigned  point_count = zend_hash_num_elements(Z_ARRVAL_P(points_zval));
+	//correção 
+	std::vector<std::vector<Point> > root_points;
+	//------------
+    /*
     Point root_points[ncontours][point_count];
+	*/
     opencv_point_object *point_object;
     zend_ulong _h;
     zval *array_val_zval;
@@ -167,7 +172,12 @@ PHP_FUNCTION(opencv_fill_poly){
             }ZEND_HASH_FOREACH_END();
 
     const Point* pts[ncontours];
+	//correção 
+    pts[0] = root_points[0].data();
+	//------------
+    /*
     pts[0] = root_points[0];
+	*/
     int npts[] = {(int)point_count};
     Point offset;
     zval *offset_point_real_zval;
@@ -379,8 +389,6 @@ PHP_FUNCTION(opencv_resize){
     opencv_size_object *dsize_obj = Z_PHP_SIZE_OBJ_P(dsize_zval);
     try {
         resize(*src_obj->mat, *dst_object->mat, *dsize_obj->size , fx, fy, (int)interpolation);
-        opencv_mat_update_property_by_c_mat(dst_real_zval, dst_object->mat);
-
     }catch (Exception e){
         opencv_throw_exception(e.what());
     }
