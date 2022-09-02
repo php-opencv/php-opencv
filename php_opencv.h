@@ -44,19 +44,6 @@ extern zend_module_entry opencv_module_entry;
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
 
-/*
-#include<opencv2/core/hal/hal.hpp>
-#include<opencv2/core/hal/interface.h>
-#include<opencv2/core/utility.hpp>
-#include<opencv2/imgproc/imgproc.hpp>
-#include<opencv2/objdetect/objdetect.hpp>
-#include<opencv2/video/video.hpp>
-#include<opencv2/ml/ml.hpp>
-#include<opencv2/dnn/dnn.hpp>
-#include<opencv2/imgcodecs/imgcodecs.hpp>
-#include<opencv2/videoio/videoio.hpp>
-#include<opencv2/face/facerec.hpp>
-*/
 
 using namespace cv;
 

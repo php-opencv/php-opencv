@@ -1,0 +1,95 @@
+ALTERAÇÕES NO CÓDIGO:
+
+config.w32
+
+php_opencv.h
+
+source/opencv2/core/opencv_mat.cc
+
+source/opencv2/opencv_imgproc.cc
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 1° ####
+
+FERRAMENTAS:
+
+	Visual studio 17 e ompilador c/c++,  Windows Arch 64x, PHP 8.0 ou superior
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 2° ####
+
+DEPENDENCIAS:
+
+	Visual studio 17 e compilador c/c++ 
+
+	Projeto OPENCV instalado na maquina windows com todos os modulos ( dll ) necessários e suportados pelo php_opencv. 
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 3° ####
+
+VARIAVEIS DE AMBIENTE:
+
+	INCLUDE = D:\Opencv\include
+
+	INCLUDEPATH = D:\Opencv\include
+
+	LIB = D:\Opencv\x64\vc17\lib
+
+	LIBPATH = D:\Opencv\x64\vc17\lib
+
+	LIBS_OPENCV =  opencv_aruco460.lib opencv_barcode460.lib opencv_bgsegm460.lib opencv_bioinspired460.lib opencv_calib3d460.lib opencv_ccalib460.lib opencv_core460.lib opencv_datasets460.lib opencv_dnn460.lib opencv_dnn_objdetect460.lib opencv_dnn_superres460.lib opencv_dpm460.lib opencv_face460.lib opencv_features2d460.lib opencv_flann460.lib opencv_fuzzy460.lib opencv_gapi460.lib opencv_hfs460.lib opencv_highgui460.lib opencv_imgcodecs460.lib opencv_imgproc460.lib opencv_img_hash460.lib opencv_intensity_transform460.lib opencv_line_descriptor460.lib opencv_mcc460.lib opencv_ml460.lib opencv_objdetect460.lib opencv_optflow460.lib opencv_phase_unwrapping460.lib opencv_photo460.lib opencv_plot460.lib opencv_quality460.lib opencv_rapid460.lib opencv_reg460.lib opencv_rgbd460.lib opencv_saliency460.lib opencv_shape460.lib opencv_stereo460.lib opencv_stitching460.lib opencv_structured_light460.lib opencv_surface_matching460.lib opencv_text460.lib opencv_video460.lib opencv_videoio460.lib opencv_videostab460.lib opencv_wechat_qrcode460.lib opencv_xfeatures2d460.lib opencv_ximgproc460.lib opencv_xobjdetect460.lib opencv_xphoto460.lib
+
+	LDFLAGS_OPENCV = /libpath:"E:\Opencv\x64\vc17\lib" /libpath:"E:\Opencv\x64\vc17\bin"
+
+	CFLAGS = /EHsc /I /K /DEBUG
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 4° ####
+
+AMBIENTE PHP:
+
+	Manual para preparar  ambiente e compilar o PHP https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2
+
+	O php_opencv deve ser compilador como uma extensão PECL, após os passos para preparar o ambiente de compilação no windows.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 5° ####
+
+Building PECL extensions
+
+	Adicionar a pasta ( pecl ) no mesmo nivel da pasta ( php-src ) onde ficará as extensões pecl, nessa mesma pasta deve colocar o projeto do php_opencv para compilar junto ao php.
+
+	Na raiz da pasta pecl, clonar o repositório php_opencv, e editar a versão do opencv na variável PHP_OPENCV_VERSION, no arquivo php_opencv.h
+
+	Na raiz da pasta php-src, Executar buildconf --force, para recarregar as configurações
+
+	Na raiz da pasta php-src, Executar configure --help , Deverá aparecer uma opção --with-opencv, esta opção deve ser ultilizada ao compilar o php
+
+	Na raiz da pasta php-src, --with-extra-includes=D:\Opencv\include --with-extra-libs=E:\Opencv\x64\vc17\lib --with-curl--with-opencv --enable-cli --enable-pdo --with-pdo-firebird --with-pdo-mysql --with-pdo-pgsql --with-pdo-sqlite --with-tidy --with-password-argon2 --with-sodium --enable-sockets --with-pgsql --with-openssl --enable-mbstring --enable-mbregex --with-ldap --with-imap --with-gmp --with-gettext --enable-ftp --enable-fileinfo --with-ffi --with-bz2 --enable-phpdbg --enable-phpdbgs --enable-embed --with-all-shared --enable-sanitizer --with-dba --with-qdbm --with-db --with-lmdb --enable-intl --with-oci8-19 --with-snmp --with-sqlite3 --with-config-file-scan-dir --enable-exif --with-mysqli --enable-soap --enable-bcmath --enable-calendar --enable-ctype --with-readline --enable-tokenizer --enable-zip --enable-shmop --enable-libxml
+
+	Na raiz da pasta php-src, Executar nmake snap
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#### 6° ####
+
+
+BUGs:
+
+	Caso aconteça erros de linker, é por que o SDK do php está gerando o arquivo OPENCV_GLOBAL_OBJS.txt  (php-src\x64\Release_TS\resp\OPENCV_GLOBAL_OBJS.txt ) apontando para as dll do opencv no caminho errado,
+
+	Deve-se editar o arquivo OPENCV_GLOBAL_OBJS.txt manualmente, e corrigir os caminhos para os caminhos corretos para as DLLs do opencv
+
+	e depois na raiz da pasta php-src, Executar nmake snap novamente
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+
+
