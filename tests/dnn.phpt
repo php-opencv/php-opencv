@@ -16,7 +16,7 @@ $blob = \CV\DNN\blobFromImages([$src], 1, new \CV\Size(48, 48), new Scalar(104, 
 var_export($blob);
 ?>
 --EXPECT--
-CV\Mat::__set_state(array(
+\CV\Mat::__set_state(array(
    'type' => 5,
    'rows' => -1,
    'cols' => -1,
@@ -29,7 +29,7 @@ CV\Mat::__set_state(array(
     3 => 48,
   ),
 ))
-CV\Mat::__set_state(array(
+\CV\Mat::__set_state(array(
    'type' => 5,
    'rows' => -1,
    'cols' => -1,

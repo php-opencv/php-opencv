@@ -3,7 +3,7 @@ dist: bionic
 language: php
 
 php:
-  - 8.0
+  - 8.2
 
 install:
   - wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb

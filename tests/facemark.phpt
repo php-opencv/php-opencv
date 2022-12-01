@@ -10,5 +10,5 @@ $facemark = FacemarkLBF::create();
 var_export($facemark);
 ?>
 --EXPECT--
-CV\Face\FacemarkLBF::__set_state(array(
+\CV\Face\FacemarkLBF::__set_state(array(
 ))
