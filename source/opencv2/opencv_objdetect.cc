@@ -188,6 +188,8 @@ void opencv_cascade_classifier_init(int module_number){
  * -------------------------------------------------------------------------------------
  */
 
+#ifdef OPENCV_OBJDETECT_FACE_HPP
+
 zend_object_handlers opencv_facedetectoryn_object_handlers;
 
 
@@ -424,7 +426,7 @@ void opencv_facedetectoryn_init(int module_number)
 }
 
 
-
+#endif
 
 /**
  * -------------------------------
@@ -451,6 +453,7 @@ void opencv_objdetect_constants_init(int module_number)
 void opencv_objdetect_init(int module_number){
     opencv_cascade_classifier_init(module_number);
     opencv_objdetect_constants_init(module_number);
+
 #ifdef OPENCV_OBJDETECT_FACE_HPP
     opencv_facedetectoryn_init(module_number);
 #endif

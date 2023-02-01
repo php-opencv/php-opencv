@@ -21,22 +21,14 @@
 #include <opencv2/objdetect.hpp>
 
 extern zend_class_entry *opencv_cascade_classifier_ce;
-extern zend_class_entry *opencv_facedetectoryn_ce;
 
 #define Z_PHP_CASCADE_CLASSIFIER_OBJ_P(zv)  get_cascade_classifier_obj(Z_OBJ_P(zv))
-#define Z_PHP_FACEDETECTORYN_OBJ_P(zv)  get_facedetectoryn_obj(Z_OBJ_P(zv))
 
 typedef struct _opencv_cascade_classifier_object{
     CascadeClassifier *cascadeClassifier;
     zend_object std;
 }opencv_cascade_classifier_object;
 
-#ifdef OPENCV_OBJDETECT_FACE_HPP
-typedef struct _opencv_facedetectoryn_object{
-    Ptr<FaceDetectorYN> facedetectoryn;
-    zend_object std;
-}opencv_facedetectoryn_object;
-#endif
 
 extern void opencv_objdetect_init(int module_number);
 
@@ -44,9 +36,20 @@ static inline opencv_cascade_classifier_object* get_cascade_classifier_obj(zend_
     return (opencv_cascade_classifier_object*)((char*)(obj) - XtOffsetOf(opencv_cascade_classifier_object, std));
 }
 
+#ifdef OPENCV_OBJDETECT_FACE_HPP
+
+extern zend_class_entry *opencv_facedetectoryn_ce;
+#define Z_PHP_FACEDETECTORYN_OBJ_P(zv)  get_facedetectoryn_obj(Z_OBJ_P(zv))
+
+typedef struct _opencv_facedetectoryn_object{
+    Ptr<FaceDetectorYN> facedetectoryn;
+    zend_object std;
+}opencv_facedetectoryn_object;
+
 static inline opencv_facedetectoryn_object* get_facedetectoryn_obj(zend_object *obj) {
     return (opencv_facedetectoryn_object*)((char*)(obj) - XtOffsetOf(opencv_facedetectoryn_object, std));
 }
+#endif
 
 
 #endif //OPENCV_OBJDETECT_H
