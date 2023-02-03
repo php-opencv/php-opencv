@@ -29,10 +29,27 @@ typedef struct _opencv_cascade_classifier_object{
     zend_object std;
 }opencv_cascade_classifier_object;
 
+
 extern void opencv_objdetect_init(int module_number);
 
 static inline opencv_cascade_classifier_object* get_cascade_classifier_obj(zend_object *obj) {
     return (opencv_cascade_classifier_object*)((char*)(obj) - XtOffsetOf(opencv_cascade_classifier_object, std));
 }
+
+#ifdef OPENCV_OBJDETECT_FACE_HPP
+
+extern zend_class_entry *opencv_facedetectoryn_ce;
+#define Z_PHP_FACEDETECTORYN_OBJ_P(zv)  get_facedetectoryn_obj(Z_OBJ_P(zv))
+
+typedef struct _opencv_facedetectoryn_object{
+    Ptr<FaceDetectorYN> facedetectoryn;
+    zend_object std;
+}opencv_facedetectoryn_object;
+
+static inline opencv_facedetectoryn_object* get_facedetectoryn_obj(zend_object *obj) {
+    return (opencv_facedetectoryn_object*)((char*)(obj) - XtOffsetOf(opencv_facedetectoryn_object, std));
+}
+#endif
+
 
 #endif //OPENCV_OBJDETECT_H
