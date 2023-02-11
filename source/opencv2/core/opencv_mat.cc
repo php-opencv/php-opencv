@@ -195,8 +195,7 @@ PHP_METHOD(opencv_mat, createWithDims)
     }
 
     //int sizes_arr[dims];
-    std::vector<long> sizes_arr;
-    sample_float_array.resize(dims);
+    int* sizes_arr = new int[dims];
 
     HashTable *sizes_ht = Z_ARRVAL_P(sizes_zval);
 
