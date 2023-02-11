@@ -194,7 +194,7 @@ PHP_METHOD(opencv_mat, createWithDims)
         RETURN_NULL();
     }
 
-    int sizes_arr[(const long *)dims];
+    int sizes_arr[(const long)dims];
 
     HashTable *sizes_ht = Z_ARRVAL_P(sizes_zval);
 
