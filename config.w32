@@ -51,7 +51,7 @@ if( CHECK_LIB("opencv_aruco"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\v
 	CHECK_LIB("opencv_videoio"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib") && CHECK_LIB("opencv_videostab"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib") && 
 	CHECK_LIB("opencv_xfeatures2d"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib") && CHECK_LIB("opencv_ximgproc"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib") && 
 	CHECK_LIB("opencv_xobjdetect"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib") && CHECK_LIB("opencv_xphoto"+opencv_version+".lib", "opencv","C:\\OpenCv\\x64\\vc16\\lib")&&
-	CHECK_HEADER_ADD_INCLUDE("opencv2\\opencv.hpp", "CFLAGS_OPENCV", "C:\\OpenCv\\include") //edit path include OpenCv )
+	CHECK_HEADER_ADD_INCLUDE("opencv2\\opencv.hpp", "CFLAGS_OPENCV", "C:\\OpenCv\\include")  )//edit path include OpenCv
 	{ 
 		EXTENSION("opencv", opencv_source_file, "opencv", "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1"); 
 	}
