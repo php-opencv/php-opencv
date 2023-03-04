@@ -27,6 +27,7 @@ DEPENDENCES:
 Visual studio 17 and c/c++ compiler
 
 OPENCV project installed on the windows machine with all modules ( dll ) and supported by php_opencv.
+https://github.com/spmallick/learnopencv/tree/master/Install-OpenCV-Windows-exe 
 
 -------------------------------------------------- -------------------------------------------------- -----------------------
 
