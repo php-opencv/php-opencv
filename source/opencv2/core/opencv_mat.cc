@@ -195,7 +195,7 @@ PHP_METHOD(opencv_mat, createWithDims)
     }
 
 #ifdef PHP_WIN32
-std::vector<long> sizes_arr;
+    std::vector<long> sizes_arr;
 #else
      int sizes_arr[dims];
 #endif
