@@ -29,30 +29,8 @@ Visual studio 17 and c/c++ compiler
 OPENCV project installed on the windows machine with all modules ( dll ) and supported by php_opencv.
 https://github.com/spmallick/learnopencv/tree/master/Install-OpenCV-Windows-exe 
 
--------------------------------------------------- -------------------------------------------------- -----------------------
 
 #### 3° ####
-
-ENVIRONMENT VARIABLES:
-
-INCLUDE = D:\Opencv\include
-
-INCLUDEPATH = D:\Opencv\include
-
-LIB = D:\Opencv\x64\vc17\lib
-
-LIBPATH = D:\Opencv\x64\vc17\lib
-
-LIBS_OPENCV =  opencv_aruco460.lib opencv_barcode460.lib opencv_bgsegm460.lib opencv_bioinspired460.lib opencv_calib3d460.lib opencv_ccalib460.lib opencv_core460.lib opencv_datasets460.lib opencv_dnn460.lib opencv_dnn_objdetect460.lib opencv_dnn_superres460.lib opencv_dpm460.lib opencv_face460.lib opencv_features2d460.lib opencv_flann460.lib opencv_fuzzy460.lib opencv_gapi460.lib opencv_hfs460.lib opencv_highgui460.lib opencv_imgcodecs460.lib opencv_imgproc460.lib opencv_img_hash460.lib opencv_intensity_transform460.lib opencv_line_descriptor460.lib opencv_mcc460.lib opencv_ml460.lib opencv_objdetect460.lib opencv_optflow460.lib opencv_phase_unwrapping460.lib opencv_photo460.lib opencv_plot460.lib opencv_quality460.lib opencv_rapid460. lib opencv_reg460.lib opencv_rgbd460.lib opencv_saliency460.lib opencv_shape460.lib opencv_stereo460.lib opencv_stitching460.lib opencv_structured_light460.lib opencv_surface_matching460.lib opencv_text460.lib opencv_video460.lib opencv._libvideoiope4 ncv_videostab460.lib opencv_wechat_qrcode460.lib opencv_xfeatures2d460.lib opencv_ximgproc460.lib opencv_xobjdetect460.lib opencv_xphoto460.lib
-
-LDFLAGS_OPENCV = /libpath:"E:\Opencv\x64\vc17\lib" /libpath:"E:\Opencv\x64\vc17\bin"
-
-CFLAGS = /EHsc /I /K /DEBUG
-
-
--------------------------------------------------- -------------------------------------------------- ----------------------
-
-#### 4° ####
 
 PHP ENVIRONMENT:
 
@@ -62,7 +40,7 @@ The php_opencv must be compiler as a PECL extension, after the steps to prepare 
 
 -------------------------------------------------- -------------------------------------------------- ----------------------
 
-#### 5° ####
+#### 4° ####
 
 Building PECL extensions
 
@@ -78,20 +56,6 @@ In the root of the php-src folder, --with-extra-includes=D:\Opencv\include --wit
 
 In the root of the php-src folder, Run nmake snap
 
--------------------------------------------------- -------------------------------------------------- ----------------------
-
-#### 6° ####
-
-
-BUGS:
-
-If linker errors occur, it is because the php SDK is generating the OPENCV_GLOBAL_OBJS.txt file (php-src\x64\Release_TS\resp\OPENCV_GLOBAL_OBJS.txt ) pointing to the opencv dlls in the wrong path,
-
-You must edit the OPENCV_GLOBAL_OBJS.txt file manually, and correct the paths to the correct paths for the opencv DLLs
-
-and then in the root of the php-src folder, Run nmake snap again
-
--------------------------------------------------- -------------------------------------------------- ----------------------
 
 
 
