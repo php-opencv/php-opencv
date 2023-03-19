@@ -33,6 +33,7 @@ void opencv_imgproc_init(int module_number)
     opencv_adaptive_threshold_types_init(module_number);
     opencv_retrieval_modes_init(module_number);
     opencv_contour_approximation_modes_init(module_number);
+    opencv_type_template_matching_operation_init(module_number);
 }
 
 /**
@@ -395,6 +396,94 @@ PHP_FUNCTION(opencv_resize){
         opencv_throw_exception(e.what());
     }
     RETURN_NULL();
+}
+
+
+
+
+PHP_FUNCTION(opencv_Canny){
+
+    zval *image_zval ,*edges_zval;
+    double threshold1,threshold2;
+    long apertureSize =3;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Ozddl",
+                                &image_zval, opencv_mat_ce,
+                                &edges_zval,
+                                &threshold1,&threshold2,
+                                &apertureSize
+    ) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *image_obj , *edges_object;
+
+    image_obj = Z_PHP_MAT_OBJ_P(image_zval);
+    zval *edges_real_zval = Z_REFVAL_P(edges_zval);
+    if(Z_TYPE_P(edges_real_zval) == IS_OBJECT && Z_OBJCE_P(edges_real_zval)==opencv_mat_ce){
+        edges_object = Z_PHP_MAT_OBJ_P(edges_real_zval);
+    } else{
+        zval_ptr_dtor(edges_real_zval);
+        zval instance;
+        Mat edges;
+        object_init_ex(&instance,opencv_mat_ce);
+        ZVAL_COPY_VALUE(edges_real_zval, &instance);
+        edges_object = Z_PHP_MAT_OBJ_P(edges_real_zval);
+        edges_object->mat = new Mat(edges);
+    }
+    try {
+        Canny(*image_obj->mat,*edges_object->mat,threshold1,threshold2,(int)apertureSize);
+        opencv_mat_update_property_by_c_mat(edges_real_zval, edges_object->mat);
+
+    }catch (Exception e){
+        opencv_throw_exception(e.what());
+    }
+    RETURN_NULL();
+
+}
+
+PHP_FUNCTION(opencv_matchTemplate){
+
+    zval *image_zval ,*result_zval, *templ_zval;
+    long method;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "OOzl",
+                                &image_zval, opencv_mat_ce,
+                                &templ_zval, opencv_mat_ce,
+                                &result_zval,
+                                &method
+                                
+    ) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *image_obj , *templ_obj,*result_object;
+
+    image_obj = Z_PHP_MAT_OBJ_P(image_zval);
+    templ_obj = Z_PHP_MAT_OBJ_P(templ_zval);
+    long result_cols = image_obj->mat->cols - templ_obj->mat->cols + 1;
+    long result_rows = image_obj->mat->rows - templ_obj->mat->rows + 1;
+    zval *result_real_zval = Z_REFVAL_P(result_zval);
+    if(Z_TYPE_P(result_real_zval) == IS_OBJECT && Z_OBJCE_P(result_real_zval)==opencv_mat_ce){
+        result_object = Z_PHP_MAT_OBJ_P(result_real_zval);
+    } else{
+        zval_ptr_dtor(result_real_zval);
+        zval instance;
+        Mat result((int)result_rows, (int)result_cols, CV_32FC1);
+        object_init_ex(&instance,opencv_mat_ce);
+        ZVAL_COPY_VALUE(result_real_zval, &instance);
+        result_object = Z_PHP_MAT_OBJ_P(result_real_zval);
+        result_object->mat =  new Mat(result);
+    }
+    try {
+        matchTemplate(*image_obj->mat,*templ_obj->mat,*result_object->mat,(int)method);
+        opencv_mat_update_property_by_c_mat(result_real_zval, result_object->mat);
+
+    }catch (Exception e){
+        opencv_throw_exception(e.what());
+    }
+    RETURN_NULL();
+
 }
 
 /**
@@ -1886,4 +1975,12 @@ void opencv_contour_approximation_modes_init(int module_number){
     REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "CHAIN_APPROX_SIMPLE", CHAIN_APPROX_SIMPLE, CONST_CS | CONST_PERSISTENT);
     REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "CHAIN_APPROX_TC89_L1", CHAIN_APPROX_TC89_L1, CONST_CS | CONST_PERSISTENT);
     REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "CHAIN_APPROX_TC89_KCOS", CHAIN_APPROX_TC89_KCOS, CONST_CS | CONST_PERSISTENT);
+}
+void opencv_type_template_matching_operation_init(int module_number){
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_SQDIFF", TM_SQDIFF, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_SQDIFF_NORMED", TM_SQDIFF_NORMED, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_CCORR", TM_CCORR, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_CCORR_NORMED", TM_CCORR_NORMED, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_CCOEFF", TM_CCOEFF, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "TM_CCOEFF_NORMED", TM_CCOEFF_NORMED, CONST_CS | CONST_PERSISTENT);
 }

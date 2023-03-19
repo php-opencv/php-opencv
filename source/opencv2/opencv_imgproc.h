@@ -27,6 +27,7 @@ void opencv_threshold_types_init(int module_number);
 void opencv_adaptive_threshold_types_init(int module_number);
 void opencv_retrieval_modes_init(int module_number);
 void opencv_contour_approximation_modes_init(int module_number);
+void opencv_type_template_matching_operation_init(int module_number);
 
 PHP_FUNCTION(opencv_cv_t_color);
 PHP_FUNCTION(opencv_ellipse);
@@ -62,6 +63,21 @@ ZEND_BEGIN_ARG_INFO_EX(opencv_resize_arginfo, 0, 0, 6)
                 ZEND_ARG_INFO(0, interpolation)
 ZEND_END_ARG_INFO()
 PHP_FUNCTION(opencv_resize);
+ZEND_BEGIN_ARG_INFO_EX(opencv_Canny_arginfo, 0, 0, 5)
+                ZEND_ARG_INFO(0, image)
+                ZEND_ARG_INFO(1, edges)
+                ZEND_ARG_INFO(0, threshold1)
+                ZEND_ARG_INFO(0, threshold2)
+                ZEND_ARG_INFO(0,apertureSize )
+ZEND_END_ARG_INFO()
+PHP_FUNCTION(opencv_Canny);
+ZEND_BEGIN_ARG_INFO_EX(opencv_matchTemplate_arginfo, 0, 0, 4)
+                ZEND_ARG_INFO(0, image)
+                ZEND_ARG_INFO(0, templ)
+                ZEND_ARG_INFO(1, result)
+                ZEND_ARG_INFO(0, method)
+ZEND_END_ARG_INFO()
+PHP_FUNCTION(opencv_matchTemplate);
 PHP_FUNCTION(opencv_put_text);
 
 ZEND_BEGIN_ARG_INFO_EX(opencv_blur_arginfo, 0, 0, 5)
