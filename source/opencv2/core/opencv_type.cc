@@ -251,9 +251,9 @@ void opencv_scalar_init(int module_number){
     opencv_scalar_object_handlers.clone_obj = NULL;
     opencv_scalar_object_handlers.free_obj = opencv_scalar_free_obj;
     opencv_scalar_object_handlers.offset = XtOffsetOf(opencv_scalar_object, std);
-
-    zval *val = (zval*)malloc(sizeof(zval)); /* empty zval */
-    zend_declare_property(opencv_scalar_ce,"val",sizeof("val") - 1, val, ZEND_ACC_PUBLIC);
+    zend_declare_property_null(opencv_scalar_ce,"val",sizeof("val") - 1, ZEND_ACC_PUBLIC);
+    //zval *val = (zval*)malloc(sizeof(zval)); /* empty zval */
+    //zend_declare_property(opencv_scalar_ce,"val",sizeof("val") - 1, val, ZEND_ACC_PUBLIC);
 }
 
 
