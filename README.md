@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/php-opencv/php-opencv.svg?branch=master)](https://travis-ci.com/php-opencv/php-opencv) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
 
 #### Installation (2 steps)
-- [install opencv 4.0.0+](https://github.com/php-opencv/php-opencv/wiki/Installation.-opencv)
+- [install opencv 4.5.5+](https://github.com/php-opencv/php-opencv/wiki/Installation.-opencv)
 - [install php-opencv for your php version](https://github.com/php-opencv/php-opencv/wiki/Installation.-php-opencv)
 - [install php-opencv-examples](https://github.com/php-opencv/php-opencv/wiki/Installation.-php-opencv-examples) (if you need it)
 - [resolve problems](https://github.com/php-opencv/php-opencv/wiki/Installation.-troubleshooting) (if you need it)
