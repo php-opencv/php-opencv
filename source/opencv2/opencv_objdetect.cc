@@ -22,6 +22,7 @@
 
 zend_class_entry *opencv_cascade_classifier_ce;
 zend_class_entry *opencv_facedetectoryn_ce;
+zend_class_entry *opencv_facerecognizersf_ce;
 
 /**
  * -----------------------------------【CV\Cascadeclassifier】--------------------------
@@ -425,6 +426,153 @@ void opencv_facedetectoryn_init(int module_number)
     opencv_facedetectoryn_object_handlers.offset = XtOffsetOf(opencv_facedetectoryn_object, std);
 }
 
+zend_object_handlers opencv_facerecognizersf_object_handlers;
+
+
+PHP_METHOD(opencv_facerecognizersf, create)
+{
+    char *model;
+    size_t model_length;
+    char *config;
+    size_t config_length;
+    long backend_id = 0;
+    long target_id = 0;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss|ll",
+                              &model, &model_length,
+                              &config, &config_length,
+                              &backend_id, &target_id) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    zval instance;
+    object_init_ex(&instance, opencv_facerecognizersf_ce);
+    opencv_facerecognizersf_object *facerecognizersf_obj = Z_PHP_FACERECOGNIZERSF_OBJ_P(&instance);
+
+    facerecognizersf_obj->facerecognizersf = FaceRecognizerSF::create(model, config, backend_id, target_id);
+
+    RETURN_ZVAL(&instance,0,0); //return php FaceRecognizerSF object
+}
+
+PHP_METHOD(opencv_facerecognizersf, alignCrop)
+{
+    zval *image_zval, *face_zval;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "OO",
+                              &image_zval, opencv_mat_ce,
+                              &face_zval, opencv_mat_ce) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *image_obj = Z_PHP_MAT_OBJ_P(image_zval);
+    opencv_mat_object *face_obj = Z_PHP_MAT_OBJ_P(face_zval);
+
+    opencv_facerecognizersf_object *obj = Z_PHP_FACERECOGNIZERSF_OBJ_P(getThis());
+
+    Mat aligned_img;
+    obj->facerecognizersf->alignCrop(*image_obj->mat, *face_obj->mat, aligned_img);
+
+    zval instance;
+    object_init_ex(&instance, opencv_mat_ce);
+    opencv_mat_object *new_obj = Z_PHP_MAT_OBJ_P(&instance);
+    new_obj->mat=new Mat(aligned_img);
+    opencv_mat_update_property_by_c_mat(&instance, new_obj->mat);
+    RETURN_ZVAL(&instance,0,0);
+}
+
+PHP_METHOD(opencv_facerecognizersf, feature)
+{
+    zval *image_zval;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O",
+                              &image_zval, opencv_mat_ce) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *image_obj = Z_PHP_MAT_OBJ_P(image_zval);
+
+    opencv_facerecognizersf_object *obj = Z_PHP_FACERECOGNIZERSF_OBJ_P(getThis());
+
+    Mat face_feature;
+    obj->facerecognizersf->feature(*image_obj->mat, face_feature);
+
+    zval instance;
+    object_init_ex(&instance, opencv_mat_ce);
+    opencv_mat_object *new_obj = Z_PHP_MAT_OBJ_P(&instance);
+    new_obj->mat=new Mat(face_feature);
+    opencv_mat_update_property_by_c_mat(&instance, new_obj->mat);
+    RETURN_ZVAL(&instance,0,0);
+}
+
+PHP_METHOD(opencv_facerecognizersf, match)
+{
+    zval *face_feature1_zval, *face_feature2_zval;
+    long dis_type = 0;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "OO|l",
+                              &face_feature1_zval, opencv_mat_ce,
+                              &face_feature2_zval, opencv_mat_ce,
+                              &dis_type) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    opencv_mat_object *face_feature1_obj = Z_PHP_MAT_OBJ_P(face_feature1_zval);
+    opencv_mat_object *face_feature2_obj = Z_PHP_MAT_OBJ_P(face_feature2_zval);
+
+    opencv_facerecognizersf_object *obj = Z_PHP_FACERECOGNIZERSF_OBJ_P(getThis());
+
+    double score = obj->facerecognizersf->match(*face_feature1_obj->mat, *face_feature2_obj->mat, dis_type);
+
+    RETURN_DOUBLE(score);
+}
+
+/**
+ * opencv_facerecognizersf_methods[]
+ */
+const zend_function_entry opencv_facerecognizersf_methods[] = {
+        PHP_ME(opencv_facerecognizersf, create, arginfo_void, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+        PHP_ME(opencv_facerecognizersf, alignCrop, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_facerecognizersf, feature, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_ME(opencv_facerecognizersf, match, arginfo_void, ZEND_ACC_PUBLIC)
+        PHP_FE_END
+};
+/* }}} */
+
+zend_object* opencv_facerecognizersf_create_handler(zend_class_entry *type)
+{
+    size_t size = sizeof(opencv_facerecognizersf_object)+zend_object_properties_size(type);
+    opencv_facerecognizersf_object *obj = (opencv_facerecognizersf_object *)ecalloc(1, size);
+    memset(obj, 0, size);
+    zend_object_std_init(&obj->std, type);
+    object_properties_init(&obj->std, type);
+    obj->std.ce = type;
+    obj->std.handlers = &opencv_facerecognizersf_object_handlers;
+    return &obj->std;
+}
+
+void opencv_facerecognizersf_free_obj(zend_object *object)
+{
+    opencv_facerecognizersf_object *obj;
+    obj = get_facerecognizersf_obj(object);
+    zend_object_std_dtor(object);
+}
+
+void opencv_facerecognizersf_init(int module_number)
+{
+    zend_class_entry ce;
+    INIT_NS_CLASS_ENTRY(ce, OPENCV_NS, "FaceRecognizerSF", opencv_facerecognizersf_methods);
+    opencv_facerecognizersf_ce = zend_register_internal_class(&ce);
+
+    opencv_facerecognizersf_ce->create_object = opencv_facerecognizersf_create_handler;
+    memcpy(&opencv_facerecognizersf_object_handlers,
+           zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    opencv_facerecognizersf_object_handlers.clone_obj = NULL;
+    opencv_facerecognizersf_object_handlers.free_obj = opencv_facerecognizersf_free_obj;
+    opencv_facerecognizersf_object_handlers.offset = XtOffsetOf(opencv_facerecognizersf_object, std);
+
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "FaceRecognizerSF_DISTYPE_FR_COSINE", FaceRecognizerSF::DisType::FR_COSINE, CONST_CS | CONST_PERSISTENT);
+    REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "FaceRecognizerSF_DISTYPE_FR_NORM_L2", FaceRecognizerSF::DisType::FR_NORM_L2, CONST_CS | CONST_PERSISTENT);
+}
 
 #endif
 
@@ -456,5 +604,6 @@ void opencv_objdetect_init(int module_number){
 
 #ifdef OPENCV_OBJDETECT_FACE_HPP
     opencv_facedetectoryn_init(module_number);
+    opencv_facerecognizersf_init(module_number);
 #endif
 }

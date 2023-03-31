@@ -49,6 +49,19 @@ typedef struct _opencv_facedetectoryn_object{
 static inline opencv_facedetectoryn_object* get_facedetectoryn_obj(zend_object *obj) {
     return (opencv_facedetectoryn_object*)((char*)(obj) - XtOffsetOf(opencv_facedetectoryn_object, std));
 }
+
+extern zend_class_entry *opencv_facerecognizersf_ce;
+#define Z_PHP_FACERECOGNIZERSF_OBJ_P(zv)  get_facerecognizersf_obj(Z_OBJ_P(zv))
+
+typedef struct _opencv_facerecognizersf_object{
+    Ptr<FaceRecognizerSF> facerecognizersf;
+    zend_object std;
+}opencv_facerecognizersf_object;
+
+static inline opencv_facerecognizersf_object* get_facerecognizersf_obj(zend_object *obj) {
+    return (opencv_facerecognizersf_object*)((char*)(obj) - XtOffsetOf(opencv_facerecognizersf_object, std));
+}
+
 #endif
 
 
