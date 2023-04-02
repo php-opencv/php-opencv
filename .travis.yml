@@ -3,11 +3,11 @@ dist: bionic
 language: php
 
 php:
-  - 8.0
+  - 8.1
 
 install:
-  - wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.0_amd64.deb
-  - sudo dpkg -i opencv_4.5.0_amd64.deb
+  - wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.5.5_amd64.deb
+  - sudo dpkg -i opencv_4.5.5_amd64.deb
   - phpize
   - ./configure
   - make
