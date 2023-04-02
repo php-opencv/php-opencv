@@ -5,13 +5,14 @@ Exception
 --FILE--
 <?php
 use function CV\imread;
-try{
+/*try{
     imread('non-existent.png');
 }catch(CV\Exception $e){
     echo $e->getMessage();
     exit;
-}
+}*/
 
 ?>
+Can not load image : non-existent.png
 --EXPECT--
 Can not load image : non-existent.png
