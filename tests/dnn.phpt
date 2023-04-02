@@ -1,5 +1,5 @@
 --TEST--
-DNN::blobFromImage
+DNN::blobFromImage, DNN:blobFromImages
 --SKIPIF--
 <?php if (!extension_loaded("opencv")) print "skip"; ?>
 --FILE--
@@ -11,8 +11,24 @@ $src = imread("./tests/Obama_gray.png");
 
 $blob = \CV\DNN\blobFromImage($src, 1, new \CV\Size(48, 48), new Scalar(104, 177, 123));
 var_export($blob);
+print PHP_EOL;
+$blob = \CV\DNN\blobFromImages([$src], 1, new \CV\Size(48, 48), new Scalar(104, 177, 123));
+var_export($blob);
 ?>
 --EXPECT--
+CV\Mat::__set_state(array(
+   'type' => 5,
+   'rows' => -1,
+   'cols' => -1,
+   'dims' => 4,
+   'shape' => 
+  array (
+    0 => 1,
+    1 => 3,
+    2 => 48,
+    3 => 48,
+  ),
+))
 CV\Mat::__set_state(array(
    'type' => 5,
    'rows' => -1,

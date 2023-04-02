@@ -664,6 +664,33 @@ PHP_FUNCTION(opencv_normalize){
 
 }
 
+/**
+ * //todo mask parameter
+ * CV\nromalize
+ * @param execute_data
+ * @param return_value
+ */
+PHP_FUNCTION(opencv_norm){
+    zval *src_zval, *src2_zval;
+    long norm_type = NORM_L2, dtype = -1;
+    zval *mask_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|l",
+                              &src_zval, opencv_mat_ce, //&src2_zval, opencv_mat_ce,
+                              &norm_type) == FAILURE) {
+        RETURN_NULL();
+    }
+    opencv_mat_object *src_object = Z_PHP_MAT_OBJ_P(src_zval);
+
+    double r;
+    /*if (Z_TYPE_P(src2_zval) == IS_OBJECT && Z_OBJCE_P(src2_zval)==opencv_mat_ce) {
+        opencv_mat_object *src2_object = Z_PHP_MAT_OBJ_P(src2_zval);
+        r = norm(*src_object->mat, *src2_object->mat, (int)norm_type);
+    } else {*/
+        r = norm(*src_object->mat, (int)norm_type);
+    //}
+
+    RETURN_DOUBLE(r);
+}
 
 /**
  *
@@ -698,4 +725,51 @@ PHP_FUNCTION(opencv_lut){
     opencv_mat_update_property_by_c_mat(dst_real_zval, dst_object->mat);
     RETURN_NULL();
 
+}
+
+/**
+ * //todo mask parameter
+ * CV\meanStdDev
+ * @param execute_data
+ * @param return_value
+ */
+PHP_FUNCTION(opencv_mean_std_dev){
+    zval *src_zval, *mean_zval, *sdv_zval;
+    zval *mask_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Ozz",
+                              &src_zval, opencv_mat_ce, &mean_zval, &sdv_zval) == FAILURE) {
+        RETURN_NULL();
+    }
+    opencv_mat_object *src_object = Z_PHP_MAT_OBJ_P(src_zval);
+    zval *mean_real_zval = Z_REFVAL_P(mean_zval);
+    zval *sdv_real_zval = Z_REFVAL_P(sdv_zval);
+    opencv_mat_object *mean_object, *sdv_object;
+
+    if (Z_TYPE_P(mean_real_zval) == IS_OBJECT && Z_OBJCE_P(mean_real_zval)==opencv_mat_ce){
+        mean_object = Z_PHP_MAT_OBJ_P(mean_real_zval);
+    } else{
+        zval_ptr_dtor(mean_real_zval);
+        zval instance;
+        Mat mean;
+        object_init_ex(&instance,opencv_mat_ce);
+        ZVAL_COPY_VALUE(mean_real_zval, &instance);
+        mean_object = Z_PHP_MAT_OBJ_P(mean_real_zval);
+        mean_object->mat = new Mat(mean);
+    }
+
+    if (Z_TYPE_P(sdv_real_zval) == IS_OBJECT && Z_OBJCE_P(sdv_real_zval)==opencv_mat_ce){
+        sdv_object = Z_PHP_MAT_OBJ_P(sdv_real_zval);
+    } else{
+        zval_ptr_dtor(sdv_real_zval);
+        zval instance2;
+        Mat sdv;
+        object_init_ex(&instance2,opencv_mat_ce);
+        ZVAL_COPY_VALUE(sdv_real_zval, &instance2);
+        sdv_object = Z_PHP_MAT_OBJ_P(sdv_real_zval);
+        sdv_object->mat = new Mat(sdv);
+    }
+    meanStdDev(*src_object->mat, *mean_object->mat, *sdv_object->mat);
+    //opencv_mat_update_property_by_c_mat(mean_real_zval, mean_object->mat);
+    //opencv_mat_update_property_by_c_mat(sdv_real_zval, sdv_object->mat);
+    RETURN_NULL();
 }

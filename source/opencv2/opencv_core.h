@@ -92,6 +92,11 @@ ZEND_BEGIN_ARG_INFO_EX(opencv_normalize_arginfo, 0, 0, 6)
                 ZEND_ARG_INFO(0, dtype)
 ZEND_END_ARG_INFO()
 PHP_FUNCTION(opencv_normalize);
+ZEND_BEGIN_ARG_INFO_EX(opencv_norm_arginfo, 0, 0, 2)
+                ZEND_ARG_INFO(0, src)
+                ZEND_ARG_INFO(0, norm_type)
+ZEND_END_ARG_INFO()
+PHP_FUNCTION(opencv_norm);
 ZEND_BEGIN_ARG_INFO_EX(opencv_absdiff_arginfo, 0, 0, 3)
                 ZEND_ARG_INFO(0, src1)
                 ZEND_ARG_INFO(0, src2)
@@ -105,5 +110,12 @@ ZEND_BEGIN_ARG_INFO_EX(opencv_lut_arginfo, 0, 0, 3)
                 ZEND_ARG_INFO(1, dst)
 ZEND_END_ARG_INFO()
 PHP_FUNCTION(opencv_lut);
+
+ZEND_BEGIN_ARG_INFO_EX(opencv_mean_std_dev_arginfo, 0, 0, 3)
+                ZEND_ARG_INFO(0, src)
+                ZEND_ARG_INFO(1, mean)
+                ZEND_ARG_INFO(1, sdv)
+ZEND_END_ARG_INFO()
+PHP_FUNCTION(opencv_mean_std_dev);
 
 #endif //OPENCV_CORE_H

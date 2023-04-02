@@ -1,29 +1,26 @@
-## PHP-OPENCV - PHP extension for Opencv
+## PHP-OPENCV - PHP extension for OpenCV
 
-[![Build Status](https://travis-ci.org/php-opencv/php-opencv.svg?branch=master)](https://travis-ci.org/php-opencv/php-opencv) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
+[![Build Status](https://travis-ci.com/php-opencv/php-opencv.svg?branch=master)](https://travis-ci.com/php-opencv/php-opencv) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
 
-### Easy installation on ubuntu 18.04 LTS from packages (approximately 1 minute):
-```
-apt update && apt install -y wget && \
-wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/opencv_4.0.1_amd64.deb && dpkg -i opencv_4.0.1_amd64.deb && rm opencv_4.0.1_amd64.deb && \
-wget https://raw.githubusercontent.com/php-opencv/php-opencv-packages/master/php-opencv_7.2-4.0.1_amd64.deb && dpkg -i php-opencv_7.2-4.0.1_amd64.deb && rm php-opencv_7.2-4.0.1_amd64.deb && \
-echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
-```
-[All installation options](https://github.com/php-opencv/php-opencv/wiki/Installation)
+#### Installation (2 steps)
+- [install opencv 4.5.5+](https://github.com/php-opencv/php-opencv/wiki/Installation.-opencv)
+- [install php-opencv for your php version](https://github.com/php-opencv/php-opencv/wiki/Installation.-php-opencv)
+- [install php-opencv-examples](https://github.com/php-opencv/php-opencv/wiki/Installation.-php-opencv-examples) (if you need it)
+- [resolve problems](https://github.com/php-opencv/php-opencv/wiki/Installation.-troubleshooting) (if you need it)
 
-### Examples
+#### Examples
 - [dnn](https://github.com/php-opencv/php-opencv-examples)
 - [core](https://github.com/hihozhou/php-opencv)
 
-### Documentation
-- [PHP OpenCV Doc](https://phpopencv.org/docs/index.html)
-- [PHP OpenCV Api](https://phpopencv.org/api/index.html)
+#### Documentation
+- [PHP OpenCV Doc](https://phpopencv.github.io/docs/)
+- [PHP OpenCV Api](https://phpopencv.github.io/api/)
 
-### Requirements
-- OpenCV 4.0.0+ (for OpenCV 3.4 use branch 3.4)
-- PHP 7.0 / 7.1 / 7.2
+#### Requirements
+- OpenCV 4.5.5+
+- PHP 7.0 / 7.1 / 7.2 / 7.3 / 7.4 / 8.0 / 8.1 / 8.2
 
-### Features
+#### Features
 - [core](https://phpopencv.org/docs/mat.html)
 - [imgproc](https://phpopencv.org/docs/gausian_median_blur_bilateral_filter.html)
 - highgui
@@ -32,10 +29,11 @@ echo "extension=opencv.so" > /etc/php/7.2/cli/conf.d/opencv.ini
 - ml
 - dnn
 
-### Helper for autocomplete and highlighting in your IDE
+#### Helper for autocomplete and highlighting in your IDE
 - [phpdoc file](https://github.com/php-opencv/php-opencv-examples/blob/master/phpdoc.php)
+- [php-opencv-ide-helper](https://github.com/hihozhou/php-opencv-ide-helper)
 
-### Contributors
+#### Contributors
 - [@morozovsk](https://github.com/morozovsk)
 - [@hihozhou](https://github.com/hihozhou)
 - [@MaleicAcid](https://github.com/MaleicAcid)

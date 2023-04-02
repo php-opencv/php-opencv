@@ -9,7 +9,7 @@ use CV\{Mat,Scalar,Point,Size};
 use function CV\{ellipse,imwrite,waitKey};
 use const CV\{CV_8UC3};
 
-$windowWidth=600;
+$windowWidth=1200;
 $thickness=2;
 $lineType=8;
 $matScalar=new Scalar(0,0,0);

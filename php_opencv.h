@@ -29,7 +29,7 @@ extern "C" {
 extern zend_module_entry opencv_module_entry;
 #define phpext_opencv_ptr &opencv_module_entry
 
-#define PHP_OPENCV_VERSION "0.1.0" /* Replace with version number for your extension */
+#define PHP_OPENCV_VERSION "4.5.5" /* Replace with version number for your extension */
 
 #ifdef PHP_WIN32
 #	define PHP_OPENCV_API __declspec(dllexport)
@@ -41,7 +41,7 @@ extern zend_module_entry opencv_module_entry;
 
 #include <iostream>
 //include opencv code
-#include <opencv2/core/core.hpp>
+#include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
 
 using namespace cv;
@@ -50,7 +50,6 @@ using namespace cv;
 #define OPENCV_FACE_NS ZEND_NS_NAME(OPENCV_NS,"Face")
 #define OPENCV_ML_NS ZEND_NS_NAME(OPENCV_NS,"ML")
 #define OPENCV_DNN_NS ZEND_NS_NAME(OPENCV_NS,"DNN")
-
 #define OPENCV_CONNECT(text1,text2) text1##text2
 
 
