@@ -595,6 +595,9 @@ void opencv_objdetect_constants_init(int module_number)
     REGISTER_NS_LONG_CONSTANT(OPENCV_NS, "CASCADE_DO_ROUGH_SEARCH", CASCADE_DO_ROUGH_SEARCH, CONST_CS | CONST_PERSISTENT);
 }
 
+/**
+ * Objdetect Init
+ */
 void opencv_objdetect_init(int module_number){
     opencv_cascade_classifier_init(module_number);
     opencv_objdetect_constants_init(module_number);
