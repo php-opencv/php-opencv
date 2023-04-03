@@ -289,7 +289,7 @@ PHP_METHOD(opencv_mat, data)
     zval shape_zval;
     array_init(&shape_zval);
 
-    long data_len = obj->mat->total();
+    long data_len = obj->mat->total() * obj->mat->channels();
     int depth = obj->mat->depth();
     uchar *data = obj->mat->data;
 
