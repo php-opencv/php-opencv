@@ -53,6 +53,7 @@ if test "$PHP_OPENCV" != "no"; then
     source/opencv2/core/opencv_cvdef.cc \
     source/opencv2/dnn/opencv_dnn.cc \
     source/opencv2/dnn/opencv_dnn_superres.cc \
+    source/opencv2/text/opencv_text_ocr.cc \
     source/opencv2/opencv_ml.cc"
 
 
