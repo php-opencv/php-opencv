@@ -52,7 +52,7 @@ using namespace cv;
 #define OPENCV_ML_NS ZEND_NS_NAME(OPENCV_NS,"ML")
 #define OPENCV_DNN_NS ZEND_NS_NAME(OPENCV_NS,"DNN")
 #define OPENCV_DNN_SUPERRES_NS ZEND_NS_NAME(OPENCV_NS,"dnn_superres")
-#define OPENCV_TEXT_OCR_NS ZEND_NS_NAME(OPENCV_NS,'text')
+#define OPENCV_TEXT_OCR_NS ZEND_NS_NAME(OPENCV_NS,"text")
 #define OPENCV_CONNECT(text1,text2) text1##text2
 
 
