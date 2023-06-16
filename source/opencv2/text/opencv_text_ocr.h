@@ -1,5 +1,4 @@
 #ifndef PHP_OPENCV_TEXT_OCR_H
-#ifndef PHP_OPENCV_TEXT_OCR_H
 #define PHP_OPENCV_TEXT_OCR_H
 #include<opencv2/text/ocr.hpp>
 
