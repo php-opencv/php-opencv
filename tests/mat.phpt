@@ -48,6 +48,8 @@ var_dump($mat_data3->dataAt(3));
 $mat_data4 = Mat::ones(4,2,CV_8UC1);
 var_dump($mat_data4->total());
 
+# Issue #55
+(new Scalar(78.4263377603, 87.7689143744, 114.895847746))->print();
 ?>
 --EXPECT--
 object(CV\Mat)#2 (5) {
@@ -184,3 +186,5 @@ array(4) {
  [  1,   1,   1,   1,   1,   1,   1,   1,   1,   1]]
 int(4)
 int(8)
+[78.4263, 87.7689, 114.896, 0]
+

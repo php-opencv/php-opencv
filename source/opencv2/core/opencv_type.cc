@@ -207,7 +207,7 @@ PHP_METHOD(opencv_scalar, __construct)
         RETURN_NULL();
     }
     opencv_scalar_object *obj = Z_PHP_SCALAR_OBJ_P(getThis());
-    Scalar scalar = Scalar((int)value1, (int)value2, (int)value3, (int)value4);
+    Scalar scalar = Scalar(value1, value2, value3, value4);
     obj->scalar = new Scalar(scalar);
     opencv_scalar_update_property_by_c_scalar(getThis(), obj->scalar);
 }
